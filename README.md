@@ -46,8 +46,15 @@ require(__DIR__ . '/src/Finix/Bootstrap.php');
 
 See the `tests/` for more details.
 
+## Hacking
 
-## Running tests
+```bash
+git clone https://github.com/finix-payments/processing-php-client.git
+cd processing-php-client
+composer install --prefer-source --no-interaction
+```
+
+### Running tests
 
 `./vendor/bin/phpunit`
 
