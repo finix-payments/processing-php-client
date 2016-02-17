@@ -13,4 +13,16 @@ class Identity extends Resource
             new HrefSpec('identities', 'id', '/'));
     }
 
+    /**
+     * @param string $processor the processor to underwrite the merchant on
+     * @return \Finix\Resources\Merchant
+     * @throws \Finix\Hal\Exception\LinkNotUniqueException
+     * @throws \Finix\Hal\Exception\RelNotFoundException
+     */
+    public function provisionMerchantOn($processor)
+    {
+        $merchant = new Merchant(["processor"=>$processor]);
+        return $merchant->create($this->resource->getLink("underwriting")->getHref());
+    }
+
 }

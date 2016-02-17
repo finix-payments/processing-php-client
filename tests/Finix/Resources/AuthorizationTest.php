@@ -21,8 +21,7 @@ class AuthorizationTest extends \PHPUnit_Framework_TestCase
         "expiration_year": 2017,
         "number": "4111 1111 1111 1111",
         "security_code": "231",
-        "address": null,
-        "available_account_type": null
+        "address": null
     }
 TAG;
 
@@ -41,11 +40,15 @@ TAG;
 
     public static function setUpBeforeClass()
     {
-        self::$identity = Identity::retrieve('IDft4s88vzmXCFZFoErTmZ9d');
-        $card = new PaymentInstrument(json_decode(self::PAYMENT_CARD_PAYLOAD, true));
-        $card->identity = self::$identity->id;
+        self::$identity = Identity::retrieve('IDjBjyepZh7pqVU1B3si4aD3');
+        // TODO: identity must have a merchant account on DUMMY_V1 processor
+        // TODO: if we're calling the api with wrong credentials, we get 500 instead of 403
+        $card = json_decode(self::PAYMENT_CARD_PAYLOAD, true);
+        $card['identity'] = self::$identity->id;
+        $card = new PaymentInstrument($card);
         $card->save();
-        self::$card =$card;
+        self::$card = $card;
+
     }
 
     public function setUp() {
@@ -63,7 +66,20 @@ TAG;
     public function test_createAuthorization() {
         $auth_state = $this->fillAuthorization($this->auth);
         $auth = new Authorization($auth_state);
-        //$auth->save();
-        print_r($auth);
+        $auth->save();
+        $this->assertStringStartsWith('AU', $auth->id);
+        $this->assertEquals($auth->state, 'SUCCEEDED');
+    }
+
+    public function test_updateAuthorization() {
+        $auth_state = $this->fillAuthorization($this->auth);
+        $auth = new Authorization($auth_state);
+        $auth->save();
+        $old_id = $auth->id;
+        $auth->capture_amount = 50;
+        $auth->save();
+        $this->assertEquals($old_id, $auth->id);
+        $this->assertEquals($auth->state, 'SUCCEEDED');
+        $this->assertNotNull($auth->transfer);
     }
 }

@@ -60,6 +60,7 @@ class Bootstrap
 
         Resources\Application::init();
         Resources\Identity::init();
+        Resources\Processor::init();
         Resources\Merchant::init();
         Resources\PaymentInstrument::init();
         Resources\Authorization::init();
