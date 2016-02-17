@@ -21,8 +21,7 @@ class PaymentInstrumentTest extends \PHPUnit_Framework_TestCase
         "expiration_year": 2017,
         "number": "4111 1111 1111 1111",
         "security_code": "231",
-        "address": null,
-        "available_account_type": null
+        "address": null
     }
 TAG;
 
