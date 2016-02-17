@@ -69,12 +69,18 @@ TAG;
         $auth = new Authorization($auth_state);
         $auth->save();
         $this->assertStringStartsWith('AU', $auth->id);
+        $this->assertEquals($auth->state, 'SUCCEEDED');
     }
 
     public function test_updateAuthorization() {
         $auth_state = $this->fillAuthorization($this->auth);
         $auth = new Authorization($auth_state);
         $auth->save();
-
+        $old_id = $auth->id;
+        $auth->capture_amount = 50;
+        $auth->save();
+        $this->assertEquals($old_id, $auth->id);
+        $this->assertEquals($auth->state, 'SUCCEEDED');
+        $this->assertNotNull($auth->transfer);
     }
 }
