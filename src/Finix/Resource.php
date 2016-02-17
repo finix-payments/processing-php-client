@@ -152,6 +152,23 @@ abstract class Resource
     }
 
     /**
+     * @param string $href
+     * @return \Finix\Resource
+     * @throws Hal\Exception\HalClientErrorException
+     * @throws Hal\Exception\HalException
+     * @throws Hal\Exception\HalRedirectionException
+     * @throws Hal\Exception\HalServerErrorException
+     */
+    protected function create($href)
+    {
+        $payload = new JsonBody(iterator_to_array($this->state));
+        $request = new Request($href, 'POST', array(), $payload);
+        $resource = $this->getClient()->sendRequest($request);
+        $this->setResource($resource);
+        return $this;
+    }
+
+    /**
      * @return bool
      */
     private function isUpdate()

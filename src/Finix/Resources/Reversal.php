@@ -13,4 +13,10 @@ class Reversal extends Resource
             new HrefSpec('reversals', 'id', '/'));
     }
 
+    public function getParentTransferHref()
+    {
+        return $this->resource->getLink("parent")->getHref();
+    }
+
+
 }

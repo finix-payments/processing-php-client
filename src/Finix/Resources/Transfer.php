@@ -11,4 +11,16 @@ class Transfer extends Resource
         self::getRegistry()->add(get_called_class(), new HrefSpec('transfers', 'id', '/'));
     }
 
+    /**
+     * @param int $amount the amount to reverse
+     * @return \Finix\Resources\Reversal
+     * @throws \Finix\Hal\Exception\LinkNotUniqueException
+     * @throws \Finix\Hal\Exception\RelNotFoundException
+     */
+    public function reverse($amount)
+    {
+        // TODO shouldn't this field be named: "reverse_amount" or "amount_to_reserve"
+        $reversal = new Reversal(["refund_amount"=>$amount]);
+        return $reversal->create($this->resource->getLink("reversals")->getHref());
+    }
 }
