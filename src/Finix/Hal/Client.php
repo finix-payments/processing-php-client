@@ -228,8 +228,14 @@ final class Client implements AbstractClient
         // The message body
         if ($messageBody = $request->getMessageBody()) {
             $httpRequest->setHeader('Content-Type', $messageBody->getContentType());
-            $httpRequest->setHeader('Content-Length', $messageBody->getContentLength());
-            $httpRequest->setBody(Stream::factory($messageBody->getContent()));
+            if(!is_a($messageBody, 'Finix\Http\MultipartBody')) {
+                $httpRequest->setHeader('Content-Length', $messageBody->getContentLength());
+                $httpRequest->setBody(Stream::factory($messageBody->getContent()));
+            }
+            else {
+                /** @var \Finix\Http\MultipartBody $messageBody */
+                $httpRequest->getBody()->addFile($messageBody->getContent());
+            }
         }
 
         // Accept hal+json response
