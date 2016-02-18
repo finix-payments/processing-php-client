@@ -86,14 +86,14 @@ TAG;
 
      private function fillDestinationTransfer($transfer)
     {
-        $transfer['identity'] = self::$identity->id;
+        $transfer['merchant_identity'] = self::$identity->id;
         $transfer['destination'] = self::$bank->id;
         return $transfer;
     }
 
     private function fillSourceTransfer($transfer)
     {
-        $transfer['identity'] = self::$identity->id;
+        $transfer['merchant_identity'] = self::$identity->id;
         $transfer['source'] = self::$card->id;
         return $transfer;
     }
