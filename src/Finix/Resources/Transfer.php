@@ -19,7 +19,7 @@ class Transfer extends Resource
      */
     public function reverse($amount)
     {
-        // TODO shouldn't this field be named: "reverse_amount" or "amount_to_reserve"
+        // TODO shouldn't this field be named: "reverse_amount" or "amount_to_reverse"
         $reversal = new Reversal(["refund_amount"=>$amount]);
         return $reversal->create($this->resource->getLink("reversals")->getHref());
     }
