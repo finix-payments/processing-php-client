@@ -172,7 +172,7 @@ TAG;
             "processor" => "DUMMY_V1",
             "amount" => 1000,
             "currency" => "USD",
-            "identity" => $identity->id,
+            "merchant_identity" => $identity->id,
             "source" => $card->id
         ];
         $srcTxfr = new Transfer($state);
@@ -185,7 +185,7 @@ TAG;
             "processor" => "DUMMY_V1",
             "amount" => 1000,
             "currency" => "USD",
-            "identity" => $identity->id,
+            "merchant_identity" => $identity->id,
             "destination" => $bank->id
         ];
         $destTxfr = new Transfer($state);
