@@ -124,5 +124,4 @@ TAG;
         $this->assertEquals($reversal->state, 'PENDING');
         $this->assertStringEndsWith($transfer->id, $reversal->getParentTransferHref());
     }
-
 }
