@@ -66,6 +66,7 @@ class Bootstrap
         Resources\Authorization::init();
         Resources\Transfer::init();
         Resources\Reversal::init();
+        Resources\Dispute::init();
 
         self::$initialized = true;
     }
