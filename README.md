@@ -30,7 +30,7 @@ If you do not wish to use Composer, you can download the [latest release](https:
 
 ```php
 <?php
-require_once("/path/to/Finix/Bootstrap.php")
+require_once("/path/to/Finix/Bootstrap.php");
 \Finix\Bootstrap::init();
 ...
 ```
