@@ -67,6 +67,7 @@ class Bootstrap
         Resources\Transfer::init();
         Resources\Reversal::init();
         Resources\Dispute::init();
+        Resources\Webhook::init();
 
         self::$initialized = true;
     }
