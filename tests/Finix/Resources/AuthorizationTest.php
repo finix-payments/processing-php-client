@@ -34,28 +34,60 @@ TAG;
        "amount": 100
     }
 TAG;
+
+    const IDENTITY_PAYLOAD = <<<TAG
+    {
+        "entity": {
+            "business_type": "LIMITED_LIABILITY_COMPANY",
+            "business_phone": "+1 (408) 756-4497",
+            "first_name": "dwayne",
+            "last_name": "saget",
+            "dob": {
+                "month": 5,
+                "day": 27,
+                "year": 1978
+            },
+            "business_address": {
+                "city": "San Mateo",
+                "country": "USA",
+                "region": "CA",
+                "line2": "Apartment 8",
+                "line1": "741 Douglass St",
+                "postal_code": "94114"
+            },
+            "doing_business_as": "doingBusinessAs",
+            "phone": "1234567890",
+            "personal_address": {
+                "city": "San Mateo",
+                "country": "USA",
+                "region": "CA",
+                "line2": "Apartment 7",
+                "line1": "741 Douglass St",
+                "postal_code": "94114"
+            },
+            "business_name": "business inc",
+            "business_tax_id": "123456789",
+            "email": "user@example.org",
+            "tax_id": "5779"
+        }
+    }
+TAG;
+    protected $state;
     protected static $identity;
     protected static $card;
     protected $auth;
 
     public static function setUpBeforeClass()
     {
-        self::$identity = Identity::retrieve('IDjBjyepZh7pqVU1B3si4aD3');
-        self::$identity_2 = Identity::retrieve('ID623YcUS26vPJk7ctf7HREg');
-        // TODO: identity must have a merchant account on DUMMY_V1 processor
+        $state = json_decode(self::IDENTITY_PAYLOAD, true);
+        $identity = new Identity($state);
+        self::$identity = $identity->save();merchant account on DUMMY_V1 processor
         // TODO: if we're calling the api with wrong credentials, we get 500 instead of 403
         $card = json_decode(self::PAYMENT_CARD_PAYLOAD, true);
         $card['identity'] = self::$identity->id;
         $card = new PaymentInstrument($card);
         $card->save();
         self::$card = $card;
-
-        $card_2 = json_decode(self::PAYMENT_CARD_PAYLOAD, true);
-        $card_2['identity'] = self::$identity_2->id;
-        $card_2 = new PaymentInstrument($card_2);
-        $card_2->save();
-        self::$card_2 = $card_2;
-
     }
 
     public function setUp() {
@@ -72,14 +104,6 @@ TAG;
         return $auth;
     }
 
-
-    private function fillAuthorization_2($auth)
-    {
-        $auth['merchant_identity'] = self::$identity_2->id;
-        $auth['source'] = self::$card_2->id;
-        return $auth;
-    }
-
     public function test_createAuthorization() {
         $auth_state = $this->fillAuthorization($this->auth);
         $auth = new Authorization($auth_state);
@@ -89,7 +113,7 @@ TAG;
     }
 
     public function test_updateAuthorization() {
-        $auth_state = $this->fillAuthorization_2($this->auth);
+        $auth_state = $this->fillAuthorization($this->auth);
         $auth = new Authorization($auth_state);
         $auth->save();
         $old_id = $auth->id;
