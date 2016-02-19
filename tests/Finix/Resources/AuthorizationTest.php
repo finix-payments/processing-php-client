@@ -81,7 +81,7 @@ TAG;
     {
         $state = json_decode(self::IDENTITY_PAYLOAD, true);
         $identity = new Identity($state);
-        self::$identity = $identity->save(); 
+        self::$identity = $identity->save();
         // TODO: if we're calling the api with wrong credentials, we get 500 instead of 403
         $card = json_decode(self::PAYMENT_CARD_PAYLOAD, true);
         $card['identity'] = self::$identity->id;
@@ -106,7 +106,9 @@ TAG;
 
     public function test_createAuthorization() {
         $auth_state = $this->fillAuthorization($this->auth);
+        var_dump($auth_state);
         $auth = new Authorization($auth_state);
+
         $auth->save();
         $this->assertStringStartsWith('AU', $auth->id);
         $this->assertEquals($auth->state, 'SUCCEEDED');
@@ -114,6 +116,7 @@ TAG;
 
     public function test_updateAuthorization() {
         $auth_state = $this->fillAuthorization($this->auth);
+        var_dump($auth_state);
         $auth = new Authorization($auth_state);
         $auth->save();
         $old_id = $auth->id;
