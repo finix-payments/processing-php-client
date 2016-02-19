@@ -81,7 +81,7 @@ TAG;
     {
         $state = json_decode(self::IDENTITY_PAYLOAD, true);
         $identity = new Identity($state);
-        self::$identity = $identity->save();merchant account on DUMMY_V1 processor
+        self::$identity = $identity->save(); 
         // TODO: if we're calling the api with wrong credentials, we get 500 instead of 403
         $card = json_decode(self::PAYMENT_CARD_PAYLOAD, true);
         $card['identity'] = self::$identity->id;
