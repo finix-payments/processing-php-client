@@ -1,8 +1,8 @@
 <?php
-namespace Finix\Resources;
+namespace Payline\Resources;
 
-use Finix\Hal\HrefSpec;
-use Finix\Resource;
+use Payline\Hal\HrefSpec;
+use Payline\Resource;
 
 class PaymentInstrument extends Resource
 {

@@ -1,8 +1,8 @@
 <?php
-namespace Finix\Resources;
+namespace Payline\Resources;
 
-use Finix\Hal\HrefSpec;
-use Finix\Resource;
+use Payline\Hal\HrefSpec;
+use Payline\Resource;
 
 class Transfer extends Resource
 {
@@ -13,9 +13,9 @@ class Transfer extends Resource
 
     /**
      * @param int $amount the amount to reverse
-     * @return \Finix\Resources\Reversal
-     * @throws \Finix\Hal\Exception\LinkNotUniqueException
-     * @throws \Finix\Hal\Exception\RelNotFoundException
+     * @return \Payline\Resources\Reversal
+     * @throws \Payline\Hal\Exception\LinkNotUniqueException
+     * @throws \Payline\Hal\Exception\RelNotFoundException
      */
     public function reverse($amount)
     {

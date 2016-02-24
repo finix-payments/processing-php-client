@@ -1,7 +1,7 @@
 <?php
-namespace Finix\Hal\Exception;
-use Finix\Hal\CustomRel;
-use Finix\Hal\RegisteredRel;
+namespace Payline\Hal\Exception;
+use Payline\Hal\CustomRel;
+use Payline\Hal\RegisteredRel;
 
 /**
  * Raised when trying to get a link or an embedded

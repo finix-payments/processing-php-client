@@ -1,11 +1,11 @@
 <?php
-namespace Finix\Test;
+namespace Payline\Test;
 
-use Finix\Hal;
-use Finix\Resources\Dispute;
-use Finix\Resources\Identity;
-use Finix\Resources\PaymentInstrument;
-use Finix\Resources\Transfer;
+use Payline\Hal;
+use Payline\Resources\Dispute;
+use Payline\Resources\Identity;
+use Payline\Resources\PaymentInstrument;
+use Payline\Resources\Transfer;
 
 class DisputeTest extends \PHPUnit_Framework_TestCase
 {

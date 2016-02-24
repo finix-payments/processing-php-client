@@ -1,8 +1,8 @@
 <?php
-namespace Finix\Resources;
+namespace Payline\Resources;
 
-use Finix\Hal\HrefSpec;
-use Finix\Resource;
+use Payline\Hal\HrefSpec;
+use Payline\Resource;
 
 class Identity extends Resource
 {
@@ -15,9 +15,9 @@ class Identity extends Resource
 
     /**
      * @param string $processor the processor to underwrite the merchant on
-     * @return \Finix\Resources\Merchant
-     * @throws \Finix\Hal\Exception\LinkNotUniqueException
-     * @throws \Finix\Hal\Exception\RelNotFoundException
+     * @return \Payline\Resources\Merchant
+     * @throws \Payline\Hal\Exception\LinkNotUniqueException
+     * @throws \Payline\Hal\Exception\RelNotFoundException
      */
     public function provisionMerchantOn($processor)
     {

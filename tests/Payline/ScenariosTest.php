@@ -1,11 +1,11 @@
 <?php
-namespace Finix\Tests;
+namespace Payline\Tests;
 
 
-use Finix\Resources\Authorization;
-use Finix\Resources\Identity;
-use Finix\Resources\PaymentInstrument;
-use Finix\Resources\Transfer;
+use Payline\Resources\Authorization;
+use Payline\Resources\Identity;
+use Payline\Resources\PaymentInstrument;
+use Payline\Resources\Transfer;
 
 class ScenariosTest extends \PHPUnit_Framework_TestCase {
 
@@ -31,7 +31,7 @@ class ScenariosTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * @return \Finix\Resources\Identity
+     * @return \Payline\Resources\Identity
      */
     private function createIdentity()
     {
@@ -79,8 +79,8 @@ TAG;
     }
 
     /**
-     * @param \Finix\Resources\Identity $identity
-     * @return \Finix\Resources\Merchant
+     * @param \Payline\Resources\Identity $identity
+     * @return \Payline\Resources\Merchant
      */
     private function createMerchant($identity)
     {
@@ -157,8 +157,8 @@ TAG;
     }
 
     /**
-     * @param \Finix\Resources\Authorization $auth
-     * @return \Finix\Resources\Authorization
+     * @param \Payline\Resources\Authorization $auth
+     * @return \Payline\Resources\Authorization
      */
     private function captureAuthorization($auth)
     {
@@ -193,8 +193,8 @@ TAG;
     }
 
     /**
-     * @param \Finix\Resources\Transfer $srcTxfr
-     * @return \Finix\Resources\Reversal
+     * @param \Payline\Resources\Transfer $srcTxfr
+     * @return \Payline\Resources\Reversal
      */
     private function reverseTransfer($srcTxfr)
     {

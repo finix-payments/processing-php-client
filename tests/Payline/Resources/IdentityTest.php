@@ -1,8 +1,8 @@
 <?php
-namespace Finix\Test;
+namespace Payline\Test;
 
-use Finix\Hal;
-use Finix\Resources\Identity;
+use Payline\Hal;
+use Payline\Resources\Identity;
 
 class IdentityTest extends \PHPUnit_Framework_TestCase
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Finix;
+namespace Payline;
 
 
 class Registry
@@ -11,7 +11,7 @@ class Registry
 
     /**
      * @param string $resource
-     * @param \Finix\Hal\HrefSpec $hrefSpec
+     * @param \Payline\Hal\HrefSpec $hrefSpec
      */
     public function add($resource, $hrefSpec)
     {
@@ -36,7 +36,7 @@ class Registry
     }
 
     /**
-     * @return \Finix\Resource[]
+     * @return \Payline\Resource[]
      */
     public function getResources()
     {
@@ -45,7 +45,7 @@ class Registry
 
     /**
      * @param string $resource
-     * @return \Finix\Hal\HrefSpec
+     * @return \Payline\Hal\HrefSpec
      */
     public function getHrefSpecForResource($resource)
     {

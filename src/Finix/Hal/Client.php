@@ -1,15 +1,15 @@
 <?php
 
-namespace Finix\Hal;
+namespace Payline\Hal;
 
-use Finix\Hal\Exception\HalException;
-use Finix\Hal\Exception\HalClientErrorException;
-use Finix\Hal\Exception\HalRedirectionException;
-use Finix\Hal\Exception\HalServerErrorException;
-use Finix\Http\AbstractClient;
-use Finix\Http\Auth\AuthenticationMethodInterface;
+use Payline\Hal\Exception\HalException;
+use Payline\Hal\Exception\HalClientErrorException;
+use Payline\Hal\Exception\HalRedirectionException;
+use Payline\Hal\Exception\HalServerErrorException;
+use Payline\Http\AbstractClient;
+use Payline\Http\Auth\AuthenticationMethodInterface;
 
-use Finix\Http\Request;
+use Payline\Http\Request;
 use \GuzzleHttp;
 use \GuzzleHttp\Message\RequestInterface;
 use \GuzzleHttp\Message\ResponseInterface;
@@ -108,7 +108,7 @@ final class Client implements AbstractClient
 
     /**
      * @param Request $request
-     * @return \Finix\Hal\Resource
+     * @return \Payline\Hal\Resource
      * @throws HalClientErrorException
      * @throws HalException
      * @throws HalRedirectionException
@@ -144,10 +144,10 @@ final class Client implements AbstractClient
     /**
      * @param $follow Follow|Follow[]    The Follow object or an array of Follow objects containing
      *                                    the parameters necessary for the HTTP request(s).
-     * @param $resource \Finix\Hal\Resource    The resource containing the link you want to follow.
+     * @param $resource \Payline\Hal\Resource    The resource containing the link you want to follow.
      *                                    If null, the entry point Resource will be used.
      *
-     * @return \Finix\Hal\Resource The Resource object contained in the last response.
+     * @return \Payline\Hal\Resource The Resource object contained in the last response.
      */
     public function sendFollow($follow, $resource = null)
     {
@@ -194,8 +194,8 @@ final class Client implements AbstractClient
      * to the URL referenced by the "self" relation type.
      * If the resource does not have such relation type or the request fails,
      * the same resource is returned.
-     * @param $resource    \Finix\Hal\Resource    The Resource to refresh.
-     * @return \Finix\Hal\Resource The refreshed Resource or the same Resource if failed to refresh it.
+     * @param $resource    \Payline\Hal\Resource    The Resource to refresh.
+     * @return \Payline\Hal\Resource The refreshed Resource or the same Resource if failed to refresh it.
      */
     public function refresh($resource)
     {
@@ -228,12 +228,12 @@ final class Client implements AbstractClient
         // The message body
         if ($messageBody = $request->getMessageBody()) {
             $httpRequest->setHeader('Content-Type', $messageBody->getContentType());
-            if(!is_a($messageBody, 'Finix\Http\MultipartBody')) {
+            if(!is_a($messageBody, 'Payline\Http\MultipartBody')) {
                 $httpRequest->setHeader('Content-Length', $messageBody->getContentLength());
                 $httpRequest->setBody(Stream::factory($messageBody->getContent()));
             }
             else {
-                /** @var \Finix\Http\MultipartBody $messageBody */
+                /** @var \Payline\Http\MultipartBody $messageBody */
                 $httpRequest->getBody()->addFile($messageBody->getContent());
             }
         }

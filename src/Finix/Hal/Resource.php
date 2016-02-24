@@ -1,12 +1,12 @@
 <?php
 
-namespace Finix\Hal;
+namespace Payline\Hal;
 
-use Finix\Hal\Exception\RelNotFoundException;
-use Finix\Hal\Exception\LinkUniqueException;
-use Finix\Hal\Exception\LinkNotUniqueException;
-use Finix\Hal\Exception\EmbeddedResourceUniqueException;
-use Finix\Hal\Exception\EmbeddedResourceNotUniqueException;
+use Payline\Hal\Exception\RelNotFoundException;
+use Payline\Hal\Exception\LinkUniqueException;
+use Payline\Hal\Exception\LinkNotUniqueException;
+use Payline\Hal\Exception\EmbeddedResourceUniqueException;
+use Payline\Hal\Exception\EmbeddedResourceNotUniqueException;
 
 /**
  * The Resource Object described in the
@@ -183,7 +183,7 @@ class Resource
     /**
      * Builds a Resource from its JSON representation.
      * @param $json        string|array|object        A JSON representing the resource.
-     * @return  \Finix\Hal\Resource
+     * @return  \Payline\Hal\Resource
      * @throws \Exception
      */
     public static function fromJson($json)

@@ -1,8 +1,8 @@
 <?php
-namespace Finix\Test;
+namespace Payline\Test;
 
-use Finix\Hal;
-use Finix\Resources\Webhook;
+use Payline\Hal;
+use Payline\Resources\Webhook;
 
 class WebhooktTest extends \PHPUnit_Framework_TestCase
 {

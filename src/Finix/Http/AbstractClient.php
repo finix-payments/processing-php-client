@@ -1,6 +1,6 @@
 <?php
 
-namespace Finix\Http;
+namespace Payline\Http;
 
 interface AbstractClient {
 

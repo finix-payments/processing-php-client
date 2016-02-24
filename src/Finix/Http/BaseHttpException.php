@@ -1,5 +1,5 @@
 <?php
-namespace Finix\Http;
+namespace Payline\Http;
 
 use GuzzleHttp\Message\RequestInterface;
 use GuzzleHttp\Message\ResponseInterface;

@@ -1,10 +1,10 @@
 <?php
-namespace Finix;
+namespace Payline;
 
-use Finix\Http\Auth\BasicAuthentication;
-use Finix\Http\JsonBody;
-use Finix\Http\Request;
-use Finix\Utils\ArrayProxy;
+use Payline\Http\Auth\BasicAuthentication;
+use Payline\Http\JsonBody;
+use Payline\Http\Request;
+use Payline\Utils\ArrayProxy;
 
 abstract class Resource
 {
@@ -18,7 +18,7 @@ abstract class Resource
     protected static $registry;
 
     /**
-     * @param \Finix\Resource $resource
+     * @param \Payline\Resource $resource
      * @return Hal\HrefSpec
      */
     public static function getHrefSpec($resource = null)
@@ -41,7 +41,7 @@ abstract class Resource
     }
 
     /**
-     * @return \Finix\Registry
+     * @return \Payline\Registry
      */
     public static function getRegistry()
     {
@@ -101,7 +101,7 @@ abstract class Resource
 
     /**
      * @param string $id the identifier of the resource
-     * @return \Finix\Resource
+     * @return \Payline\Resource
      * @throws Hal\Exception\HalClientErrorException
      * @throws Hal\Exception\HalException
      * @throws Hal\Exception\HalRedirectionException
@@ -116,7 +116,7 @@ abstract class Resource
     }
 
     /**
-     * @return \Finix\Resource
+     * @return \Payline\Resource
      * @throws Hal\Exception\HalClientErrorException
      * @throws Hal\Exception\HalException
      * @throws Hal\Exception\HalRedirectionException
@@ -153,7 +153,7 @@ abstract class Resource
 
     /**
      * @param string $href
-     * @return \Finix\Resource
+     * @return \Payline\Resource
      * @throws Hal\Exception\HalClientErrorException
      * @throws Hal\Exception\HalException
      * @throws Hal\Exception\HalRedirectionException

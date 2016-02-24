@@ -1,6 +1,6 @@
 <?php
 
-namespace Finix\Http;
+namespace Payline\Http;
 
 class JsonBody extends MessageBody
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Finix;
+namespace Payline;
 
 /**
  * Configurable settings.
@@ -8,15 +8,15 @@ namespace Finix;
  *  You can either set these settings individually:
  *
  *  <code>
- *  \Finix\Settings::$username = 'username';
- *  \Finix\Settings::password = 'username';
+ *  \Payline\Settings::$username = 'username';
+ *  \Payline\Settings::password = 'username';
  *  </code>
  *
  *  or all at once:
  *
  *  <code>
- *  \Finix\Settings::configure(
- *      'https://api.finix.io',
+ *  \Payline\Settings::configure(
+ *      'https://api.payline.io',
  *      'username',
  *      'password'
  *      );
@@ -26,10 +26,10 @@ class Settings
 {
     const VERSION = '1.0.0';
 
-    public static $url_root = 'https://api.finix.io',
+    public static $url_root = 'https://api.payline.io',
                   $username = null,
                   $password = null,
-                  $agent = 'finix-php',
+                  $agent = 'payline-php',
                   $version = Settings::VERSION,
                   $accept = 'application/vnd.json+api';
 

@@ -1,8 +1,8 @@
 <?php
-namespace Finix\Hal\Exception;
+namespace Payline\Hal\Exception;
 
-use Finix\Hal\Resource;
-use Finix\Http\BaseHttpException;
+use Payline\Hal\Resource;
+use Payline\Http\BaseHttpException;
 use GuzzleHttp\Message\RequestInterface;
 use GuzzleHttp\Message\ResponseInterface;
 
@@ -14,7 +14,7 @@ class HalException extends BaseHttpException
      * representation of a Resource representing the error.
      *
      * This is basically a shortcut for Resource::fromJson(getResponseBody()).
-     * @return  \Finix\Hal\Resource    The Resource returned by the response (may be empty).
+     * @return  \Payline\Hal\Resource    The Resource returned by the response (may be empty).
      */
     public function getResponseResource() {
         return Resource::fromJson($this->getResponseBody());

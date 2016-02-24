@@ -1,9 +1,9 @@
 <?php
 
-namespace Finix\Http\Auth;
+namespace Payline\Http\Auth;
 
-use Finix\Http;
-use Finix\Http\AbstractClient;
+use Payline\Http;
+use Payline\Http\AbstractClient;
 use GuzzleHttp\Message\RequestInterface;
 
 /**

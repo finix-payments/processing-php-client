@@ -1,14 +1,14 @@
 <?php
-namespace Finix\Tests;
+namespace Payline\Tests;
 
-use Finix\Http;
-use Finix\Http\Auth;
-use Finix\Hal;
-use Finix\Hal\Client;
-use Finix\Hal\Exception;
+use Payline\Http;
+use Payline\Http\Auth;
+use Payline\Hal;
+use Payline\Hal\Client;
+use Payline\Hal\Exception;
 
 class ClientTest extends \PHPUnit_Framework_TestCase {
-    const APIURL = 'http://b.papi.staging.finix.io';
+    const APIURL = 'https://api-test.payline.io';
     const PROFILEURL = self::APIURL;
 
     const USERNAME = 'USwyuGJdVcsRTzDeX9smLVGQ';

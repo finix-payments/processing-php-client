@@ -1,9 +1,9 @@
 <?php
-namespace Finix\Test;
+namespace Payline\Test;
 
-use Finix\Hal;
-use Finix\Resources\Identity;
-use Finix\Resources\PaymentInstrument;
+use Payline\Hal;
+use Payline\Resources\Identity;
+use Payline\Resources\PaymentInstrument;
 
 class PaymentInstrumentTest extends \PHPUnit_Framework_TestCase
 {

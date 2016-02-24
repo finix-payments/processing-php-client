@@ -1,6 +1,6 @@
 <?php
 
-namespace Finix\Utils;
+namespace Payline\Utils;
 
 use ArrayAccess;
 use ArrayObject;

@@ -1,5 +1,5 @@
 <?php
-namespace Finix\Hal\Exception;
+namespace Payline\Hal\Exception;
 
 /**
  * Raised when trying to find an embedded Resource by its relation type

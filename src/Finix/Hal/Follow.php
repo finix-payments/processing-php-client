@@ -1,11 +1,11 @@
 <?php
 
-namespace Finix\Hal;
+namespace Payline\Hal;
 
-use Finix\Http\AbstractRequest;
-use Finix\Http\MessageBody;
-use Finix\Hal\Exception\LinkNotUniqueException;
-use Finix\Hal\Exception\RelNotFoundException;
+use Payline\Http\AbstractRequest;
+use Payline\Http\MessageBody;
+use Payline\Hal\Exception\LinkNotUniqueException;
+use Payline\Hal\Exception\RelNotFoundException;
 
 final class Follow extends AbstractRequest
 {
@@ -27,7 +27,7 @@ final class Follow extends AbstractRequest
     /**
      * Looks for a unique Link referenced by the set
      * relation type (RegisteredRel|CustomRel) and returns its href property.
-     * @param $resource \Finix\Hal\Resource             The Resource containing a Link referenced
+     * @param $resource \Payline\Hal\Resource             The Resource containing a Link referenced
      *                                     by the set relation type (RegisteredRel|CustomRel).
      * @return string    The URL in the href property of the Link.
      * @throws LinkNotUniqueException

@@ -1,4 +1,4 @@
 <?php
-namespace Finix\Hal\Exception;
+namespace Payline\Hal\Exception;
 
 class HalRedirectionException extends HalException {}

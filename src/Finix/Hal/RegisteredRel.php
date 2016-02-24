@@ -1,6 +1,6 @@
 <?php
 
-namespace Finix\Hal;
+namespace Payline\Hal;
 
 /**
  * The list of link relation types registered by the IANA Registry:

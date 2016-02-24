@@ -1,6 +1,6 @@
 <?php
 
-namespace Finix\Hal;
+namespace Payline\Hal;
 
 class HrefSpec
 {

@@ -1,8 +1,8 @@
 <?php
-namespace Finix\Http\Auth;
+namespace Payline\Http\Auth;
 
-use Finix\Http\AbstractClient;
-use Finix\Http\BaseHttpException;
+use Payline\Http\AbstractClient;
+use Payline\Http\BaseHttpException;
 use GuzzleHttp\Message\RequestInterface;
 
 interface AuthenticationMethodInterface {

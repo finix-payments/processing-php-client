@@ -1,10 +1,10 @@
 <?php
 
-namespace Finix;
-use Finix\Resources;
+namespace Payline;
+use Payline\Resources;
 
 /**
- * Bootstrapper for Finix does autoloading and resource initialization.
+ * Bootstrapper for Payline does autoloading and resource initialization.
  */
 class Bootstrap
 {
@@ -16,7 +16,7 @@ class Bootstrap
 
     public static function init()
     {
-        spl_autoload_register(array('\Finix\Bootstrap', 'autoload'));
+        spl_autoload_register(array('\Payline\Bootstrap', 'autoload'));
         self::initializeResources();
     }
 
@@ -27,13 +27,13 @@ class Bootstrap
 
     public static function pharInit()
     {
-        spl_autoload_register(array('\Finix\Bootstrap', 'pharAutoload'));
+        spl_autoload_register(array('\Payline\Bootstrap', 'pharAutoload'));
         self::initializeResources();
     }
 
     public static function pharAutoload($classname)
     {
-        self::_autoload('phar://finix.phar', $classname);
+        self::_autoload('phar://payline.phar', $classname);
     }
 
     private static function _autoload($base, $classname)

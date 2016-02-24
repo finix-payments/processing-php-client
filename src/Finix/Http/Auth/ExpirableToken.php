@@ -1,5 +1,5 @@
 <?php
-namespace Finix\Http\Auth;
+namespace Payline\Http\Auth;
 
 class ExpirableToken
 {

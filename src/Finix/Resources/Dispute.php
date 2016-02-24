@@ -1,10 +1,10 @@
 <?php
-namespace Finix\Resources;
+namespace Payline\Resources;
 
-use Finix\Hal\HrefSpec;
-use Finix\Http\MultipartBody;
-use Finix\Http\Request;
-use Finix\Resource;
+use Payline\Hal\HrefSpec;
+use Payline\Http\MultipartBody;
+use Payline\Http\Request;
+use Payline\Resource;
 use GuzzleHttp\Post\PostFile;
 
 class Dispute extends Resource

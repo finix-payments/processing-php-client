@@ -1,5 +1,5 @@
 <?php
-namespace Finix\Hal\Exception;
+namespace Payline\Hal\Exception;
 
 /**
  * Raised when trying to find a Link by its relation type

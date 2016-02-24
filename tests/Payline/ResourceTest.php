@@ -1,8 +1,8 @@
 <?php
-namespace Finix\Test;
+namespace Payline\Test;
 
-use Finix\Hal;
-use Finix\Hal\Resource;
+use Payline\Hal;
+use Payline\Hal\Resource;
 
 
 class ResourceTest extends \PHPUnit_Framework_TestCase {
@@ -74,7 +74,7 @@ END;
 
         // We got 2 embedded orders
         $orders = $resource->getEmbeddedResources(new Hal\CustomRel('acme:orders'));
-        /** @var $orders \Finix\Hal\Resource[] */
+        /** @var $orders \Payline\Hal\Resource[] */
 
         $this->assertEquals(2, count($orders));
         $order1 = $orders[0];
