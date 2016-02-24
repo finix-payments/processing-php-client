@@ -1,0 +1,198 @@
+<?php
+namespace Payline;
+
+use Payline\Http\Auth\BasicAuthentication;
+use Payline\Http\JsonBody;
+use Payline\Http\Request;
+use Payline\Utils\ArrayProxy;
+
+abstract class Resource
+{
+    /** @var Hal\Resource $resource */
+    protected $resource;
+    /** @var  ArrayProxy $state */
+    protected $state;
+
+    protected static $href;
+    protected static $client;
+    protected static $registry;
+
+    /**
+     * @param \Payline\Resource $resource
+     * @return Hal\HrefSpec
+     */
+    public static function getHrefSpec($resource = null)
+    {
+        if(is_null($resource)){
+            $resource = get_called_class();
+        }
+        if(!is_string($resource)) {
+            $resource = get_class($resource);
+        }
+        return self::getRegistry()->getHrefSpecForResource($resource);
+    }
+
+    /**
+     * @return Hal\Client
+     */
+    public static function getClient()
+    {
+        return self::$client;
+    }
+
+    /**
+     * @return \Payline\Registry
+     */
+    public static function getRegistry()
+    {
+        return self::$registry;
+    }
+
+    public static function init()
+    {
+        self::$client = new Hal\Client(
+            Settings::$url_root,
+            '/',
+            null,
+            new BasicAuthentication(Settings::$username, Settings::$password));
+        self::$registry = new Registry();
+    }
+
+    public function __construct(array $state = null, array $links = null)
+    {
+        $this->setResource(new Hal\Resource($state, $links));
+    }
+
+    public function __get($name)
+    {
+        if($this->state->has_key($name))
+        {
+            return $this->state[$name];
+        }
+
+        // unknown
+        $trace = debug_backtrace();
+        trigger_error(
+            sprintf('Undefined property via __get(): %s in %s on line %s',
+                $name,
+                $trace[0]['file'],
+                $trace[0]['line']),
+            E_USER_NOTICE
+        );
+
+        return null;
+    }
+
+    public function __set($name, $value)
+    {
+        $this->state[$name] = $value;
+    }
+
+    public function __isset($name)
+    {
+        if (array_key_exists($name, $this->resource->getAllLinks()) ||
+            array_key_exists($name, $this->resource->getState()))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $id the identifier of the resource
+     * @return \Payline\Resource
+     * @throws Hal\Exception\HalClientErrorException
+     * @throws Hal\Exception\HalException
+     * @throws Hal\Exception\HalRedirectionException
+     * @throws Hal\Exception\HalServerErrorException
+     */
+    public static function retrieve($id)
+    {
+        $uri = self::getHrefSpec()->collection_uri . '/' . $id;
+        $resource = self::getClient()->sendRequest(new Request($uri));
+        $class = get_called_class();
+        return new $class($resource->getState(), $resource->getAllLinks());
+    }
+
+    /**
+     * @return \Payline\Resource
+     * @throws Hal\Exception\HalClientErrorException
+     * @throws Hal\Exception\HalException
+     * @throws Hal\Exception\HalRedirectionException
+     * @throws Hal\Exception\HalServerErrorException
+     * @throws Hal\Exception\LinkNotUniqueException
+     * @throws Hal\Exception\RelNotFoundException
+     */
+    public function save()
+    {
+        $payload = new JsonBody(iterator_to_array($this->state));
+        if($this->isUpdate())
+        {
+            $request = new Request(
+                $this->resource->getLink("self")->getHref(),
+                'PUT',
+                array(),
+                $payload
+            );
+            $resource = $this->getClient()->sendRequest($request);
+            $this->setResource($resource);
+        }
+        else { // it is create
+            $request = new Request(
+                $this->getHrefSpec($this)->collection_uri,
+                'POST',
+                array(),
+                $payload
+            );
+            $resource = $this->getClient()->sendRequest($request);
+            $this->setResource($resource);
+        }
+        return $this;
+    }
+
+    /**
+     * @param string $href
+     * @return \Payline\Resource
+     * @throws Hal\Exception\HalClientErrorException
+     * @throws Hal\Exception\HalException
+     * @throws Hal\Exception\HalRedirectionException
+     * @throws Hal\Exception\HalServerErrorException
+     */
+    protected function create($href)
+    {
+        $payload = new JsonBody(iterator_to_array($this->state));
+        $request = new Request($href, 'POST', array(), $payload);
+        $resource = $this->getClient()->sendRequest($request);
+        $this->setResource($resource);
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    private function isUpdate()
+    {
+        return isset($this->resource->getState()['id']);
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getHref()
+    {
+        return $this->resource->getLink("self")->getHref();
+    }
+
+    /**
+     * @param Hal\Resource $resource
+     */
+    private function setResource($resource)
+    {
+        $this->resource = $resource;
+        $this->state = new ArrayProxy($resource->getState());
+    }
+
+
+}

@@ -1,10 +1,10 @@
 <?php
 
-require(__DIR__ . '/src/Finix/Settings.php');
-Finix\Settings::configure(
-    'http://b.papi.staging.finix.io',
-    'USo7wNx4M4NAFZzPWQMLBHpM',
-    '48919985-f2b2-4f42-a98f-b367dfc1316f');
+require(__DIR__ . '/src/Payline/Settings.php');
+Payline\Settings::configure(
+    'https://api-test.payline.io',
+    'US6DsJ1V7qFZhFx27wuntKf1',
+    '5a363493-700d-4a03-8dce-dea2484a52df');
 
-require(__DIR__ . '/src/Finix/Bootstrap.php');
-\Finix\Bootstrap::init();
+require(__DIR__ . '/src/Payline/Bootstrap.php');
+\Payline\Bootstrap::init();

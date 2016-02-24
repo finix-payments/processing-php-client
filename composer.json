@@ -1,11 +1,11 @@
 {
-  "name": "finix/processing-php",
-  "description": "A PHP HTTP Client conforming to the HAL hypermedia type for the Finix processing API",
+  "name": "payline/processing-php",
+  "description": "A PHP HTTP Client conforming to the HAL hypermedia type for the Payline processing API",
   "license": "Apache2",
   "authors": [
     {
-      "name": "Finix Development",
-      "email": "dev@finixpayments.com"
+      "name": "Payline Development",
+      "email": "dev@paylinepayments.com"
     }
   ],
   "require": {
@@ -17,12 +17,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Finix\\": "src/"
+      "Payline\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Finix\\Tests\\": "tests/"
+      "Payline\\Tests\\": "tests/"
     }
   }
 }
