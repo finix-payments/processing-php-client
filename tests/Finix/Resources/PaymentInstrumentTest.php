@@ -29,8 +29,8 @@ TAG;
     {
         "name": {
             "first_name": "dwayne",
-            "last_name": "saget",
-            "full_name": "dwayne saget"
+            "last_name": "Sunkhronos",
+            "full_name": "dwayne Sunkhronos"
         },
         "type": "BANK_ACCOUNT",
         "tags": null,
@@ -52,7 +52,7 @@ TAG;
     public static function setUpBeforeClass()
     {
         // TODO: fetch this from the API via collection
-        self::$identity = Identity::retrieve('IDft4s88vzmXCFZFoErTmZ9d');
+        self::$identity = Identity::retrieve('IDkmT6VXMZu3yRCjDmw6Kn9H');
     }
 
     public function setUp() {

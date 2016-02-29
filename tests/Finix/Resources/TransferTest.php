@@ -13,8 +13,8 @@ class TransferTest extends \PHPUnit_Framework_TestCase
     {
         "name": {
             "first_name": "dwayne",
-            "last_name": "saget",
-            "full_name": "dwayne saget"
+            "last_name": "Sunkhronos",
+            "full_name": "dwayne Sunkhronos"
         },
         "type": "BANK_ACCOUNT",
         "tags": null,
