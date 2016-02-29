@@ -44,7 +44,7 @@ TAG;
     public static function setUpBeforeClass()
     {
         // TODO: identity must have a merchant account on DUMMY_V1 processor
-        self::$identity = Identity::retrieve('IDjBjyepZh7pqVU1B3si4aD3');
+        self::$identity = Identity::retrieve('IDkmT6VXMZu3yRCjDmw6Kn9H');
 
         // setup card
         $card = json_decode(self::PAYMENT_CARD_PAYLOAD, true);
@@ -76,13 +76,13 @@ TAG;
     }
 
     public function test_disputeRetrieve() {
-        $dispute = Dispute::retrieve("DIpGgij37fsc22A4JTf9bP1a");
-        $this->assertEquals("DIpGgij37fsc22A4JTf9bP1a", $dispute->id);
+        $dispute = Dispute::retrieve("DIoKBVh8hpmJTuWm7K6fouiZ");
+        $this->assertEquals("DIoKBVh8hpmJTuWm7K6fouiZ", $dispute->id);
         $this->assertEquals($dispute->reason, "FRAUD");
     }
 
     public function test_uploadDispute() {
-        $dispute = Dispute::retrieve("DIpGgij37fsc22A4JTf9bP1a");
+        $dispute = Dispute::retrieve("DIoKBVh8hpmJTuWm7K6fouiZ");
         /** @var Dispute $dispute */
         $file = $dispute->uploadFile($this->receiptImage);
         $this->assertStringStartsWith("DF", $file->id);

@@ -25,4 +25,16 @@ class Identity extends Resource
         return $merchant->create($this->resource->getLink("underwriting")->getHref());
     }
 
+
+    /**
+     * @param string $processor the processor to settle the funds out to
+     * @return \Finix\Resources\Settlement
+     * @throws \Finix\Hal\Exception\LinkNotUniqueException
+     * @throws \Finix\Hal\Exception\RelNotFoundException
+     */
+    public function createSettlement($processor)
+    {
+        $settlement = new Settlement(["processor"=>$processor]);
+        return $settlement->create($this->resource->getLink("settlements")->getHref());
+    }
 }

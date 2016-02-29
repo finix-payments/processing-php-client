@@ -13,7 +13,7 @@ class IdentityTest extends \PHPUnit_Framework_TestCase
             "business_type": "LIMITED_LIABILITY_COMPANY",
             "business_phone": "+1 (408) 756-4497",
             "first_name": "dwayne",
-            "last_name": "saget",
+            "last_name": "Sunkhronos",
             "dob": {
                 "month": 5,
                 "day": 27,
