@@ -52,16 +52,19 @@ TAG;
 TAG;
 
     protected $state;
+    protected $verify_payload;
 
     public function setUp() {
         $this->state = json_decode(self::IDENTITY_PAYLOAD, true);
         $this->assertEquals(json_last_error(), 0);
+
+        $this->verify_payload = json_decode(self::IDENTITY_PAYLOAD, true);
     }
 
     public function test_verifyIdentity() {
         $identity = new Identity($this->state);
         $identity->save();
-        $verification = $identity->verifyOn(self::VERIFICATION_PAYLOAD);
+        $verification = $identity->verifyOn($this->verify_payload);
         $this->assertStringStartsWith('VI', $verification ->id);
         $this->assertEquals($verification->entity["state"], "PENDING");
         $this->assertEquals($verification->entity["processor"], "DUMMY_V1");
