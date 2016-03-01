@@ -3,8 +3,8 @@
 require(__DIR__ . '/src/Finix/Settings.php');
 Finix\Settings::configure(
     'http://b.papi.staging.finix.io',
-    'USo7wNx4M4NAFZzPWQMLBHpM',
-    '48919985-f2b2-4f42-a98f-b367dfc1316f');
+    'US7AQLoX6FtZcPDttFAafEz2',
+    'f3276399-20f4-4bc3-aff0-71131cb347b8');
 
 require(__DIR__ . '/src/Finix/Bootstrap.php');
 \Finix\Bootstrap::init();
