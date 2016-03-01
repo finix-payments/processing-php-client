@@ -61,7 +61,7 @@ TAG;
     public function test_verifyIdentity() {
         $identity = new Identity($this->state);
         $identity->save();
-        $verification = $identity->verifyOn(VERIFICATION_PAYLOAD);
+        $verification = $identity->verifyOn(self::VERIFICATION_PAYLOAD);
         $this->assertStringStartsWith('VI', $verification ->id);
         $this->assertEquals($verification->entity["state"], "PENDING");
         $this->assertEquals($verification->entity["processor"], "DUMMY_V1");
