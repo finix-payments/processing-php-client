@@ -69,6 +69,7 @@ class Bootstrap
         Resources\Dispute::init();
         Resources\Webhook::init();
         Resources\Settlement::init();
+        Resources\Verification::init();
 
         self::$initialized = true;
     }
