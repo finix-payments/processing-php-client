@@ -4,7 +4,7 @@ namespace Finix\Test;
 use Finix\Hal;
 use Finix\Resources\Identity;
 
-class IdentityTest extends \PHPUnit_Framework_TestCase
+class VerificationTest extends \PHPUnit_Framework_TestCase
 {
 
     const IDENTITY_PAYLOAD = <<<TAG
