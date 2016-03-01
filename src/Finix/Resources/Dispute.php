@@ -24,7 +24,7 @@ class Dispute extends Resource
             $this->resource->getLink("evidence")->getHref(),
             'POST',
             array(),
-            new MultipartBody(new PostFile("evidence", $realFilePath, 'rb'))
+            new MultipartBody(new PostFile("file", $realFilePath, 'rb'))
         );
         $response = $this->getClient()->sendRequest($request);
         $evidence = new Evidence($response->getState(), $response->getAllLinks());
