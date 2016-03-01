@@ -84,7 +84,9 @@ TAG;
      */
     private function createMerchant($identity)
     {
-        return $identity->provisionMerchantOn("DUMMY_V1");
+        $payload = array(
+            "processor" => "DUMMY_V1");
+        return $identity->provisionMerchantOn($payload);
     }
 
     private function createCard($identity)

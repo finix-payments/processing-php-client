@@ -93,7 +93,9 @@ TAG;
         $identity = new Identity($identity);
         $identity = $identity->save();
         self::$identity = $identity;
-        $identity->provisionMerchantOn("DUMMY_V1");
+        $payload = array(
+            "processor" => "DUMMY_V1");
+        $identity->provisionMerchantOn($payload);
 
         $card = json_decode(self::PAYMENT_CARD_PAYLOAD, true);
         $card['identity'] = $identity->id;
