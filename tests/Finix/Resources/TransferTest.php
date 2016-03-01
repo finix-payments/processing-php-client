@@ -62,7 +62,7 @@ TAG;
     public static function setUpBeforeClass()
     {
         // TODO: identity must have a merchant account on DUMMY_V1 processor
-        self::$identity = Identity::retrieve('IDjBjyepZh7pqVU1B3si4aD3');
+        self::$identity = Identity::retrieve('ID69aYzr1DErerPLzjyASrCn');
 
         // setup bank account
         $bank = json_decode(self::BANK_ACCOUNT_PAYLOAD, true);
@@ -114,7 +114,7 @@ TAG;
         $this->assertEquals($transfer->state, 'PENDING'); // transfers are async
     }
 
-    public function test_reversalCreate()
+public function test_reversalCreate()
     {
         $transfer_state = $this->fillSourceTransfer($this->transfer);
         $transfer = new Transfer($transfer_state);

@@ -52,7 +52,7 @@ TAG;
     public static function setUpBeforeClass()
     {
         // TODO: fetch this from the API via collection
-        self::$identity = Identity::retrieve('IDkmT6VXMZu3yRCjDmw6Kn9H');
+        self::$identity = Identity::retrieve('ID69aYzr1DErerPLzjyASrCn');
     }
 
     public function setUp() {
