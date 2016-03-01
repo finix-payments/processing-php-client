@@ -91,7 +91,8 @@ TAG;
     {
         $identity = json_decode(self::IDENTITY_PAYLOAD, true);
         $identity = new Identity($identity);
-        self::$identity->save();
+        $identity = $identity->save();
+        self::$identity = $identity;
         $identity->provisionMerchantOn("DUMMY_V1");
 
         $card = json_decode(self::PAYMENT_CARD_PAYLOAD, true);
