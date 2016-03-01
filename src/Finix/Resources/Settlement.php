@@ -8,8 +8,7 @@ class Settlement extends Resource
 {
     public static function init()
     {
-        self::getRegistry()->add(get_called_class(),
-            new HrefSpec('settlements', 'id', '/'));
+        self::getRegistry()->add(get_called_class(), new HrefSpec('settlements', 'id', '/'));
     }
 
 }
