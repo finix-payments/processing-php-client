@@ -117,6 +117,7 @@ TAG;
     private function fillSettlement($settlement)
     {
         $settlement['identity'] = self::$identity->id;
+        $transfer['source'] = self::$card->id;
         return $settlement;
     }
 

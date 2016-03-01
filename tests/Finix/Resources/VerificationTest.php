@@ -56,9 +56,9 @@ TAG;
 
     public function setUp() {
         $this->state = json_decode(self::IDENTITY_PAYLOAD, true);
-        $this->assertEquals(json_last_error(), 0);
 
-        $this->verify_payload = json_decode(self::IDENTITY_PAYLOAD, true);
+        $this->verify_payload = json_decode(self::VERIFICATION_PAYLOAD, true);
+        $this->assertEquals(json_last_error(), 0);
     }
 
     public function test_verifyIdentity() {
