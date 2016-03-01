@@ -66,7 +66,7 @@ TAG;
         $identity->save();
         $verification = $identity->verifyOn($this->verify_payload);
         $this->assertStringStartsWith('VI', $verification ->id);
-        $this->assertEquals($verification->entity["state"], "PENDING");
-        $this->assertEquals($verification->entity["processor"], "DUMMY_V1");
+        $this->assertEquals($verification->state, "PENDING");
+        $this->assertEquals($verification->processor, "DUMMY_V1");
     }
 }
