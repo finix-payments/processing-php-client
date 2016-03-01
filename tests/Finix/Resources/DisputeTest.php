@@ -44,7 +44,7 @@ TAG;
     public static function setUpBeforeClass()
     {
         // TODO: identity must have a merchant account on DUMMY_V1 processor
-        self::$identity = Identity::retrieve('IDkmT6VXMZu3yRCjDmw6Kn9H');
+        self::$identity = Identity::retrieve('ID69aYzr1DErerPLzjyASrCn');
 
         // setup card
         $card = json_decode(self::PAYMENT_CARD_PAYLOAD, true);
@@ -84,7 +84,7 @@ TAG;
     public function test_uploadDispute() {
         $dispute = Dispute::retrieve("DIoKBVh8hpmJTuWm7K6fouiZ");
         /** @var Dispute $dispute */
-        $file = $dispute->uploadFile($this->receiptImage);
+        $file = $dispute->uploadEvidence($this->receiptImage);
         $this->assertStringStartsWith("DF", $file->id);
         $this->assertEquals($file->dispute, $dispute->id);
     }

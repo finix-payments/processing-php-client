@@ -17,9 +17,9 @@ class Identity extends Resource
      * @throws \Finix\Hal\Exception\LinkNotUniqueException
      * @throws \Finix\Hal\Exception\RelNotFoundException
      */
-    public function provisionMerchantOn($processor)
+    public function provisionMerchantOn(array $args)
     {
-        $merchant = new Merchant(["processor"=>$processor]);
+        $merchant = new Merchant(["processor"=>$args['processor']]);
         return $merchant->create($this->resource->getLink("underwriting")->getHref());
     }
 
