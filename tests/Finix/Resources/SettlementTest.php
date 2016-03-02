@@ -85,7 +85,7 @@ TAG;
     protected static $identity;
     protected static $card;
     protected static $transfer;
-    protected static $settlement;
+    protected $settlement;
     protected $state;
 
 
