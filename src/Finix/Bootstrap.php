@@ -68,6 +68,9 @@ class Bootstrap
         Resources\Reversal::init();
         Resources\Dispute::init();
         Resources\Webhook::init();
+        Resources\Settlement::init();
+        Resources\Verification::init();
+        Resources\Evidence::init();
 
         self::$initialized = true;
     }

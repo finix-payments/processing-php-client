@@ -4,7 +4,7 @@ namespace Finix\Test;
 use Finix\Hal;
 use Finix\Resources\Identity;
 
-class IdentityTest extends \PHPUnit_Framework_TestCase
+class VerificationTest extends \PHPUnit_Framework_TestCase
 {
 
     const IDENTITY_PAYLOAD = <<<TAG
@@ -44,39 +44,29 @@ class IdentityTest extends \PHPUnit_Framework_TestCase
         }
     }
 TAG;
+
+    const VERIFICATION_PAYLOAD = <<<TAG
+    {
+        "processor": "DUMMY_V1"
+    }
+TAG;
+
     protected $state;
+    protected $verify_payload;
 
     public function setUp() {
         $this->state = json_decode(self::IDENTITY_PAYLOAD, true);
+
+        $this->verify_payload = json_decode(self::VERIFICATION_PAYLOAD, true);
         $this->assertEquals(json_last_error(), 0);
     }
 
-    public function test_createIdentity() {
-        $identity = new Identity($this->state);
-        $this->assertFalse(isset($identity->id));
-        $identity->save();
-        $this->assertTrue(isset($identity->id));
-        $this->assertStringStartsWith('ID', $identity->id);
-    }
-
-    public function test_retrieveIdentity() {
+    public function test_verifyIdentity() {
         $identity = new Identity($this->state);
         $identity->save();
-
-        $fetchedIdentity = Identity::retrieve($identity->id);
-        $this->assertStringEndsWith($identity->id, $fetchedIdentity->getHref());
-    }
-
-    public function test_updateIdentity() {
-        $this->markTestSkipped("Ignored until Identity can be updated");
-
-        $identity = new Identity($this->state);
-        $identity->save();
-        $this->assertEquals($identity->entity['tax_id'], $this->state['entity']['tax_id']);
-        $entity = $identity->entity;
-        $entity['tax_id'] = '991111';
-        $identity->entity = $entity;
-        $identity->save();
-        $this->assertEquals($identity->entity['tax_id'], '991111');
+        $verification = $identity->verifyOn($this->verify_payload);
+        $this->assertStringStartsWith('VI', $verification ->id);
+        $this->assertEquals($verification->state, "PENDING");
+        $this->assertEquals($verification->processor, "DUMMY_V1");
     }
 }

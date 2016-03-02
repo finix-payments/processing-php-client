@@ -14,21 +14,21 @@ class Dispute extends Resource
         self::getRegistry()->add(get_called_class(), new HrefSpec('disputes', 'id', '/'));
     }
 
-    public function uploadFile($filePath)
+    public function uploadEvidence($filePath)
     {
         $realFilePath = realpath($filePath);
         if(!file_exists($realFilePath)) {
-            throw new \Exception(sprintf("File %s does not exist", $realFilePath));
+            throw new \Exception(sprintf("Evidence %s does not exist", $realFilePath));
         }
         $request = new Request(
-            $this->resource->getLink("files")->getHref(),
+            $this->resource->getLink("evidence")->getHref(),
             'POST',
             array(),
             new MultipartBody(new PostFile("file", $realFilePath, 'rb'))
         );
         $response = $this->getClient()->sendRequest($request);
-        $file = new File($response->getState(), $response->getAllLinks());
-        return $file;
+        $evidence = new Evidence($response->getState(), $response->getAllLinks());
+        return $evidence;
     }
 
 }
