@@ -40,7 +40,7 @@ TAG;
 
     public static function setUpBeforeClass()
     {
-        self::$identity = Identity::retrieve('IDjBjyepZh7pqVU1B3si4aD3');
+        self::$identity = Identity::retrieve('ID69aYzr1DErerPLzjyASrCn');
         // TODO: identity must have a merchant account on DUMMY_V1 processor
         // TODO: if we're calling the api with wrong credentials, we get 500 instead of 403
         $card = json_decode(self::PAYMENT_CARD_PAYLOAD, true);
