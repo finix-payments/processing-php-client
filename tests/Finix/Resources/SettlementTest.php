@@ -84,12 +84,15 @@ TAG;
 
     protected static $identity;
     protected static $card;
-    protected $settlement;
+    protected static $transfer;
+    protected static $settlement;
     protected $state;
+
 
     public static function setUpBeforeClass()
     {
         $identity = json_decode(self::IDENTITY_PAYLOAD, true);
+
         $identity = new Identity($identity);
         $identity = $identity->save();
         self::$identity = $identity;
@@ -104,9 +107,12 @@ TAG;
         self::$card = $card;
 
         $transfer = json_decode(self::TRANSFER_PAYLOAD, true);
+        $transfer['source'] = self::$card->id;
+        $transfer['merchant_identity'] = $identity->id;
+
         $transfer = new Transfer($transfer);
-        $transfer->save();
-        self::$transfer= $transfer;
+        $transfer = $transfer->save();
+        self::$transfer = $transfer;
     }
 
     public function setUp() {
@@ -117,13 +123,13 @@ TAG;
     private function fillSettlement($settlement)
     {
         $settlement['identity'] = self::$identity->id;
-        $transfer['source'] = self::$card->id;
         return $settlement;
     }
 
     public function test_createSettlement() {
+        //        Sleep for 1 min for transfer to transition states
         sleep(60);
-        $settlement_state = $this->fillSettlement($this->$settlement);
+        $settlement_state = $this->fillSettlement($this->settlement);
         $settlement = self::$identity->createSettlement($settlement_state);
         $this->assertStringStartsWith('ST', $settlement->id);
         $this->assertEquals($settlement->identity, self::$identity->id);
