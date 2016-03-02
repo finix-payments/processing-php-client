@@ -70,6 +70,7 @@ class Bootstrap
         Resources\Webhook::init();
         Resources\Settlement::init();
         Resources\Verification::init();
+        Resources\Evidence::init();
 
         self::$initialized = true;
     }
