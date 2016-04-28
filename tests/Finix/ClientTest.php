@@ -8,7 +8,7 @@ use Finix\Hal\Client;
 use Finix\Hal\Exception;
 
 class ClientTest extends \PHPUnit_Framework_TestCase {
-    const APIURL = 'http://b.papi.staging.finix.io';
+    const APIURL = 'https://api-staging.finix.io/';
     const PROFILEURL = self::APIURL;
 
     const USERNAME = 'US7AQLoX6FtZcPDttFAafEz2';
