@@ -5,6 +5,7 @@ use Finix\Http\Auth\BasicAuthentication;
 use Finix\Http\JsonBody;
 use Finix\Http\Request;
 use Finix\Utils\ArrayProxy;
+use \stdClass;
 
 abstract class Resource
 {
@@ -126,6 +127,10 @@ abstract class Resource
      */
     public function save()
     {
+        if (empty($this->state["tags"])) {
+          $this->state["tags"] = new stdClass();
+        }
+
         $payload = new JsonBody(iterator_to_array($this->state));
         if($this->isUpdate())
         {
