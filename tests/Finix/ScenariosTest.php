@@ -37,40 +37,47 @@ class ScenariosTest extends \PHPUnit_Framework_TestCase {
     {
         $IDENTITY_PAYLOAD = <<<TAG
             {
-                "entity": {
-                    "business_type": "LIMITED_LIABILITY_COMPANY",
-                    "business_phone": "+1 (408) 756-4497",
-                    "first_name": "dwayne",
-                    "last_name": "Sunkhronos",
-                    "dob": {
-                        "month": 5,
-                        "day": 27,
-                        "year": 1978
-                    },
-                    "business_address": {
-                        "city": "San Mateo",
-                        "country": "USA",
-                        "region": "CA",
-                        "line2": "Apartment 8",
-                        "line1": "741 Douglass St",
-                        "postal_code": "94114"
-                    },
-                    "doing_business_as": "doingBusinessAs",
-                    "phone": "1234567890",
-                    "personal_address": {
-                        "city": "San Mateo",
-                        "country": "USA",
-                        "region": "CA",
-                        "line2": "Apartment 7",
-                        "line1": "741 Douglass St",
-                        "postal_code": "94114"
-                    },
-                    "business_name": "business inc",
-                    "business_tax_id": "123456789",
-                    "email": "user@example.org",
-                    "tax_id": "5779"
-                }
-            }
+        "entity": {
+            "max_transaction_amount": 100,
+            "url": "http://sample-url.com",
+            "annual_card_volume": 100,
+            "default_statement_descriptor": "default statement",
+            "incorporation_date": {"day": 12, "month": 2, "year": 2016},
+            "mcc": 7399,
+            "principal_percentage_ownership": 12,
+            "business_type": "LIMITED_LIABILITY_COMPANY",
+            "business_phone": "+1 (408) 756-4497",
+            "first_name": "dwayne",
+            "last_name": "Sunkhronos",
+            "dob": {
+                "month": 5,
+                "day": 27,
+                "year": 1978
+            },
+            "business_address": {
+                "city": "San Mateo",
+                "country": "USA",
+                "region": "CA",
+                "line2": "Apartment 8",
+                "line1": "741 Douglass St",
+                "postal_code": "94114"
+            },
+            "doing_business_as": "doingBusinessAs",
+            "phone": "1234567890",
+            "personal_address": {
+                "city": "San Mateo",
+                "country": "USA",
+                "region": "CA",
+                "line2": "Apartment 7",
+                "line1": "741 Douglass St",
+                "postal_code": "94114"
+            },
+            "business_name": "business inc",
+            "business_tax_id": "123456789",
+            "email": "user@example.org",
+            "tax_id": "5779"
+        }
+    }
 TAG;
         $state = json_decode($IDENTITY_PAYLOAD, true);
         $this->assertEquals(json_last_error(), 0);
