@@ -11,8 +11,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
     const APIURL = 'https://api-staging.finix.io/';
     const PROFILEURL = self::APIURL;
 
-    const USERNAME = 'USrdogpiqwJFdUFEAqyzBXJu';
-    const PASSWORD = '45c9f61e-fb31-4004-9938-7827baf3e652';
+    const USERNAME = 'USgbL9NMg2AxBJH4WpPLkfTY';
+    const PASSWORD = '341d885e-4422-4e7f-beb5-7dfe9d7c75da';
 
     /** @var $client Client */
     protected $client;

@@ -10,6 +10,13 @@ class IdentityTest extends \PHPUnit_Framework_TestCase
     const IDENTITY_PAYLOAD = <<<TAG
     {
         "entity": {
+            "max_transaction_amount": 100,
+            "url": "http://sample-url.com",
+            "annual_card_volume": 100,
+            "default_statement_descriptor": "default statement",
+            "incorporation_date": {"day": 12, "month": 2, "year": 2016},
+            "mcc": 7399,
+            "principal_percentage_ownership": 12,
             "business_type": "LIMITED_LIABILITY_COMPANY",
             "business_phone": "+1 (408) 756-4497",
             "first_name": "dwayne",
