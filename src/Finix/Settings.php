@@ -26,7 +26,7 @@ class Settings
 {
     const VERSION = '1.0.0';
 
-    public static $url_root = 'https://api.finix.io',
+    public static $url_root = 'https://api-staging.finix.io/',
                   $username = null,
                   $password = null,
                   $agent = 'finix-php',
