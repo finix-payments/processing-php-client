@@ -29,10 +29,8 @@ require_once('vendor/autoload.php');
 If you do not wish to use Composer, you can download the [latest release](https://github.com/finix-payments/processing-php/releases). Then, `require` all bootstrap files:
 
 ```php
-<?php
 require_once("/path/to/Finix/Bootstrap.php");
 \Finix\Bootstrap::init();
-...
 ```
 
 ## Getting Started
