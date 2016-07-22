@@ -1,11 +1,9 @@
 <?php
 namespace Finix\Test;
 
-use Finix\Hal;
 use Finix\Resources\Identity;
 use Finix\Resources\PaymentInstrument;
 use Finix\Resources\Transfer;
-use Finix\Resources\Settlement;
 
 class SettlementTest extends \PHPUnit_Framework_TestCase
 {

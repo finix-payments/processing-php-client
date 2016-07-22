@@ -1,10 +1,10 @@
 <?php
 namespace Finix\Test;
 
-use Finix\Hal;
 use Finix\Resources\Identity;
 use Finix\Resources\PaymentInstrument;
 use Finix\Resources\Transfer;
+use Finix\Tests\SampleData;
 
 class TransferTest extends \PHPUnit_Framework_TestCase
 {
@@ -62,7 +62,7 @@ TAG;
     public static function setUpBeforeClass()
     {
         // TODO: identity must have a merchant account on DUMMY_V1 processor
-        self::$identity = Identity::retrieve('IDszRMhKZ9xgktpGc1haQ9LH');
+        self::$identity = Identity::retrieve(SampleData::$identityId);
 
         // setup bank account
         $bank = json_decode(self::BANK_ACCOUNT_PAYLOAD, true);
