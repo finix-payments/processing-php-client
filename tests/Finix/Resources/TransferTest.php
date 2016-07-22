@@ -1,10 +1,9 @@
 <?php
-namespace Finix\Test;
+namespace Finix\Tests;
 
 use Finix\Resources\Identity;
 use Finix\Resources\PaymentInstrument;
 use Finix\Resources\Transfer;
-use Finix\Tests\SampleData;
 
 class TransferTest extends \PHPUnit_Framework_TestCase
 {
