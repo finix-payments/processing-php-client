@@ -1,9 +1,9 @@
 <?php
 namespace Finix\Test;
 
-use Finix\Hal;
 use Finix\Resources\Identity;
 use Finix\Resources\PaymentInstrument;
+use Finix\Tests\SampleData;
 
 class PaymentInstrumentTest extends \PHPUnit_Framework_TestCase
 {
@@ -52,7 +52,7 @@ TAG;
     public static function setUpBeforeClass()
     {
         // TODO: fetch this from the API via collection
-        self::$identity = Identity::retrieve('IDszRMhKZ9xgktpGc1haQ9LH');
+        self::$identity = Identity::retrieve(SampleData::$identityId);
     }
 
     public function setUp() {
