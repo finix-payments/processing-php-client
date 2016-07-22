@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: phuonghqh
- * Date: 7/22/16
- * Time: 3:41 PM
- */
 
 namespace Finix\Tests;
 
