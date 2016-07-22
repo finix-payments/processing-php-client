@@ -1,9 +1,8 @@
 <?php
-namespace Finix\Test;
+namespace Finix\Tests;
 
 use Finix\Resources\Identity;
 use Finix\Resources\PaymentInstrument;
-use Finix\Tests\SampleData;
 
 class PaymentInstrumentTest extends \PHPUnit_Framework_TestCase
 {

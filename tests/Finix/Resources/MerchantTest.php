@@ -1,9 +1,6 @@
 <?php
 namespace Finix\Test;
 
-use Finix\Hal;
-use Finix\Resources\Identity;
-
 class MerchantTest extends \PHPUnit_Framework_TestCase
 {
 

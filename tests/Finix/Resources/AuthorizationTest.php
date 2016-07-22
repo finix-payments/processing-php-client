@@ -1,10 +1,9 @@
 <?php
-namespace Finix\Test;
+namespace Finix\Tests;
 
 use Finix\Resources\Authorization;
 use Finix\Resources\Identity;
 use Finix\Resources\PaymentInstrument;
-use Finix\Tests\SampleData;
 
 class AuthorizationTest extends \PHPUnit_Framework_TestCase
 {

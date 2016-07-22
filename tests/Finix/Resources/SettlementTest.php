@@ -1,5 +1,5 @@
 <?php
-namespace Finix\Test;
+namespace Finix\Tests;
 
 use Finix\Resources\Identity;
 use Finix\Resources\PaymentInstrument;

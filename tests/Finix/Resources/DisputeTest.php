@@ -1,11 +1,10 @@
 <?php
-namespace Finix\Test;
+namespace Finix\Tests;
 
 use Finix\Resources\Dispute;
 use Finix\Resources\Identity;
 use Finix\Resources\PaymentInstrument;
 use Finix\Resources\Transfer;
-use Finix\Tests\SampleData;
 
 class DisputeTest extends \PHPUnit_Framework_TestCase
 {
