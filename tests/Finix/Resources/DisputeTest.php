@@ -1,7 +1,6 @@
 <?php
-namespace Finix\Test;
+namespace Finix\Tests;
 
-use Finix\Hal;
 use Finix\Resources\Dispute;
 use Finix\Resources\Identity;
 use Finix\Resources\PaymentInstrument;
@@ -44,7 +43,7 @@ TAG;
     public static function setUpBeforeClass()
     {
         // TODO: identity must have a merchant account on DUMMY_V1 processor
-        self::$identity = Identity::retrieve('ID6ue3SPmAZBQg1rLkrtqnkZ');
+        self::$identity = Identity::retrieve(SampleData::$identityId);
 
         // setup card
         $card = json_decode(self::PAYMENT_CARD_PAYLOAD, true);
@@ -76,13 +75,13 @@ TAG;
     }
 
     public function test_disputeRetrieve() {
-        $dispute = Dispute::retrieve("DI38iqAaFZie49p5PQv9f3eU");
-        $this->assertEquals("DI38iqAaFZie49p5PQv9f3eU", $dispute->id);
+        $dispute = Dispute::retrieve(SampleData::$disputeId);
+        $this->assertEquals(SampleData::$disputeId, $dispute->id);
 //        $this->assertEquals($dispute->reason, "FRAUD");
     }
 
     public function test_uploadDispute() {
-        $dispute = Dispute::retrieve("DI38iqAaFZie49p5PQv9f3eU");
+        $dispute = Dispute::retrieve(SampleData::$disputeId);
         /** @var Dispute $dispute */
         $file = $dispute->uploadEvidence($this->receiptImage);
         $this->assertStringStartsWith("DF", $file->id);
