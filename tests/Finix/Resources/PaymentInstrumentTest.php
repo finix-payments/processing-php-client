@@ -1,7 +1,6 @@
 <?php
-namespace Finix\Test;
+namespace Finix\Tests;
 
-use Finix\Hal;
 use Finix\Resources\Identity;
 use Finix\Resources\PaymentInstrument;
 
@@ -52,7 +51,7 @@ TAG;
     public static function setUpBeforeClass()
     {
         // TODO: fetch this from the API via collection
-        self::$identity = Identity::retrieve('IDszRMhKZ9xgktpGc1haQ9LH');
+        self::$identity = Identity::retrieve(SampleData::$identityId);
     }
 
     public function setUp() {
