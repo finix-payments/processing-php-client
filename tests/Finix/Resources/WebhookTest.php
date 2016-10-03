@@ -1,7 +1,6 @@
 <?php
 namespace Finix\Test;
 
-use Finix\Hal;
 use Finix\Resources\Webhook;
 
 class WebhooktTest extends \PHPUnit_Framework_TestCase
