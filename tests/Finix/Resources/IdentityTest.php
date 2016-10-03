@@ -1,7 +1,6 @@
 <?php
 namespace Finix\Test;
 
-use Finix\Hal;
 use Finix\Resources\Identity;
 
 class IdentityTest extends \PHPUnit_Framework_TestCase
