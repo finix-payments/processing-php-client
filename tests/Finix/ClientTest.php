@@ -10,14 +10,14 @@ class ClientTest extends \PHPUnit_Framework_TestCase {
 
     protected function setUp() {
         $this->client = new Client(
-            SampleData::$apiUrl,
+            Fixtures::$apiUrl,
             '/',
-            SampleData::$apiUrl,
-            new Auth\BasicAuthentication(SampleData::$username, SampleData::$password)
+            Fixtures::$apiUrl,
+            new Auth\BasicAuthentication(Fixtures::$username, Fixtures::$password)
         );
     }
 
-    public function test_clientCommunicatesToAPI() {
+    public function testClientCommunicatesToAPI() {
         $this->assertNotNull($this->client->getEntryPointResource());
     }
 

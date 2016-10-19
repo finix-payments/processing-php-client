@@ -2,6 +2,8 @@
 
 namespace Finix;
 
+use Finix\Resource;
+
 /**
  * Configurable settings.
  *
@@ -26,24 +28,28 @@ class Settings
 {
     const VERSION = '1.0.0';
 
-    public static $url_root = 'https://api-staging.finix.io/',
+    public static $url_root = null,
                   $username = null,
                   $password = null,
                   $agent = 'finix-php',
                   $version = Settings::VERSION,
                   $accept = 'application/vnd.json+api';
 
-    /**
-     * Configure all settings.
-     *
-     * @param string $url_root The root (schema://hostname[:port]) to use when constructing api URLs.
-     * @param string $username The username to identify the client
-     * @param string $password The api key secret to use for authenticating when talking to the api. If null then api usage is limited to unauthenticated endpoints.
-     */
-    public static function configure($url_root, $username, $password)
+    public static function configure(array $args)
     {
-        self::$url_root= $url_root;
-        self::$username= $username;
-        self::$password = $password;
+        if (array_key_exists("root_url", $args))
+        {
+            self::$url_root = $args["root_url"];
+        }
+
+        if (array_key_exists("username", $args))
+        {
+            self::$username = $args["username"];
+        }
+
+        if (array_key_exists("password", $args))
+        {
+            self::$password = $args["password"];
+        }
     }
 }
