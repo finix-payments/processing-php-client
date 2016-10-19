@@ -6,11 +6,9 @@ use Finix\Resource;
 
 class Merchant extends Resource
 {
+
     public static function init()
     {
-        self::getRegistry()->add(
-            get_called_class(),
-            new HrefSpec('merchants', 'id', '/'));
+        self::getRegistry()->add(get_called_class(), new HrefSpec('merchants', 'id', '/'));
     }
-
 }

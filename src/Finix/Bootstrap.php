@@ -53,11 +53,13 @@ class Bootstrap
      */
     private static function initializeResources()
     {
-        if (self::$initialized)
+        if (self::$initialized) {
             return;
+        }
 
         Resource::init();
 
+        Resources\User::init();
         Resources\Application::init();
         Resources\Identity::init();
         Resources\Processor::init();

@@ -37,7 +37,7 @@ require_once("/path/to/Finix/Bootstrap.php");
 
 ```php
 require(__DIR__ . '/src/Finix/Settings.php');
-Finix\Settings::configure('http://b.papi.staging.finix.io', '$USERNAME', '$PASSWORD');
+Finix\Settings::configure('https://api-staging.finix.io/', '$USERNAME', '$PASSWORD');
 require(__DIR__ . '/src/Finix/Bootstrap.php');
 \Finix\Bootstrap::init();
 ```
