@@ -63,5 +63,3 @@ See `circle.yml` for more details.
 - Install [MITM Proxy](https://mitmproxy.org/)
 - `sudo mitmdump  -P http://b.papi.staging.finix.io -a -vv -p 80`
 - Run the tests, see the request / response
-
-
