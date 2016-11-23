@@ -3,6 +3,7 @@
 namespace Finix\Http\Auth;
 
 use Finix\Http;
+use Finix\Settings;
 use Finix\Http\AbstractClient;
 use GuzzleHttp\Message\RequestInterface;
 
@@ -86,7 +87,8 @@ final class BasicAuthentication implements AuthenticationMethodInterface
      */
     private function getCredentials()
     {
-        $basic = base64_encode($this->user_id . ':' . $this->password);
+        $basic = base64_encode(Settings::$username . ':' . Settings::$password);
+//        $basic = base64_encode($this->user_id . ':' . $this->password);
         return $basic;
     }
 }

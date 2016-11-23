@@ -4,7 +4,7 @@ namespace Finix\Resources;
 use Finix\Hal\HrefSpec;
 use Finix\Resource;
 
-class PaymentInstrument extends Resource
+abstract class PaymentInstrument extends Resource
 {
     public static function init()
     {

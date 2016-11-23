@@ -2,212 +2,128 @@
 namespace Finix\Tests;
 
 
-use Finix\Resources\Authorization;
-use Finix\Resources\Identity;
-use Finix\Resources\PaymentInstrument;
-use Finix\Resources\Transfer;
+use Finix\Resources\Dispute;
+use Finix\Resources\Verification;
+use Finix\Settings;
 
-class ScenariosTest extends \PHPUnit_Framework_TestCase {
+class ScenariosTest extends \PHPUnit_Framework_TestCase
+{
 
-    public function test_Scenario()
+    private $partnerUser;
+    private $user;
+    private $application;
+    private $dummyProcessor;
+    private $identity;
+    private $merchant;
+    private $card;
+    private $cardVerification;
+    private $pushFundTransfer;
+    private $bankAccount;
+    private $pushFundTransferReversal;
+    private $webhook;
+    private $authorization;
+    private $identityVerification;
+    private $pushFundTransfer2;
+    private $pushFundTransfer1;
+    private $settlement;
+
+    protected function setUp()
     {
-        $identity = $this->createIdentity();
-        $this->createMerchant($identity);
-        $card = $this->createCard($identity);
-        $bank = $this->createBank($identity);
+        Settings::configure(["username" => null, "password" => null]);
 
-        // auth + capture
-        $auth = $this->createAuthorization($identity, $card);
-        $captured = $this->captureAuthorization($auth);
+        date_default_timezone_set("UTC");
 
-        // create sale directly
-        $srcTxfr = $this->createSourceTransfer($identity, $card);
+        $this->user = Fixtures::createAdminUser();
 
-        // credit a bank account
-        $destTxfr = $this->createDestinationTransfer($identity, $bank);
+        Settings::configure(["username" => $this->user->id, "password" => $this->user->password]);
 
-        // reverse a sale ("issue a refund")
-        $reversal = $this->reverseTransfer($srcTxfr);
+        $this->application = Fixtures::createApplication($this->user);
+        $this->application->processing_enabled = true;
+        $this->application->settlement_enabled = true;
+        $this->application = $this->application->save();
+
+        $this->dummyProcessor = Fixtures::dummyProcessor($this->application);
+
+        $this->partnerUser = Fixtures::createPartnerUser($this->application);
+
+        Settings::configure(["username" => $this->partnerUser->id, "password" => $this->partnerUser->password]);
+
+        $this->identity = Fixtures::createIdentity();
+
+        $this->merchant = Fixtures::provisionMerchant($this->identity);
+
+        $this->card = Fixtures::createCard($this->identity);
+
+        $this->cardVerification = $this->card->verifyOn(new Verification(["processor" => "DUMMY_V1"]));
+
+        $this->pushFundTransfer = Fixtures::createTransfer([
+            "identity" => $this->card->identity,
+            "amount" => Fixtures::$disputeAmount,
+            "source" => $this->card->id,
+            "tags" => ["_source" => "php_client"]
+        ]);
+
+        self::assertEquals($this->pushFundTransfer->state, "PENDING", "Transfer not in pending state");
+
+        Fixtures::waitFor(function () {
+            $this->pushFundTransfer = $this->pushFundTransfer->refresh();
+            return $this->pushFundTransfer->state == "SUCCEEDED";
+        });
+
+        $this->bankAccount = Fixtures::createBankAccount($this->identity);
+
+        $this->webhook = Fixtures::createWebhook("https://tools.ietf.org/html/rfc2606");
     }
 
-    /**
-     * @return \Finix\Resources\Identity
-     */
-    private function createIdentity()
+    public function testCaptureAuthorization()
     {
-        $IDENTITY_PAYLOAD = <<<TAG
-            {
-        "entity": {
-            "max_transaction_amount": 100,
-            "url": "http://sample-url.com",
-            "annual_card_volume": 100,
-            "default_statement_descriptor": "default statement",
-            "incorporation_date": {"day": 12, "month": 2, "year": 2016},
-            "mcc": 7399,
-            "principal_percentage_ownership": 12,
-            "business_type": "LIMITED_LIABILITY_COMPANY",
-            "business_phone": "+1 (408) 756-4497",
-            "first_name": "dwayne",
-            "last_name": "Sunkhronos",
-            "dob": {
-                "month": 5,
-                "day": 27,
-                "year": 1978
-            },
-            "business_address": {
-                "city": "San Mateo",
-                "country": "USA",
-                "region": "CA",
-                "line2": "Apartment 8",
-                "line1": "741 Douglass St",
-                "postal_code": "94114"
-            },
-            "doing_business_as": "doingBusinessAs",
-            "phone": "1234567890",
-            "personal_address": {
-                "city": "San Mateo",
-                "country": "USA",
-                "region": "CA",
-                "line2": "Apartment 7",
-                "line1": "741 Douglass St",
-                "postal_code": "94114"
-            },
-            "business_name": "business inc",
-            "business_tax_id": "123456789",
-            "email": "user@example.org",
-            "tax_id": "5779"
-        }
-    }
-TAG;
-        $state = json_decode($IDENTITY_PAYLOAD, true);
-        $this->assertEquals(json_last_error(), 0);
-        $identity = new Identity($state);
-        return $identity->save();
+        $this->markTestSkipped('must be revisited, see https://github.com/verygoodgroup/processing/issues/2330#issue-190787250');
+        $this->authorization = Fixtures::createAuthorization($this->card, 100);
+        $this->authorization = $this->authorization->capture(10);
+        self::assertEquals($this->authorization->state, "SUCCEEDED", "Capture amount $10 of '" . $this->card->id . "' not succeeded");
     }
 
-    /**
-     * @param \Finix\Resources\Identity $identity
-     * @return \Finix\Resources\Merchant
-     */
-    private function createMerchant($identity)
+    public function testReverseFunds()
     {
-        $payload = array(
-            "processor" => "DUMMY_V1");
-        return $identity->provisionMerchantOn($payload);
+        $this->pushFundTransferReversal = $this->pushFundTransfer->reverse(50);
+        self::assertEquals($this->pushFundTransferReversal->state, "PENDING", "Reverse not in pending state");
     }
 
-    private function createCard($identity)
+    public function testVoidAuthorization()
     {
-        $PAYMENT_CARD_PAYLOAD = <<<TAG
-        {
-            "name": {
-                "first_name": "Joe",
-                "last_name": "Doe",
-                "full_name": "Joe Doe"
-            },
-            "type": "PAYMENT_CARD",
-            "tags": null,
-            "expiration_month": 12,
-            "expiration_year": 2017,
-            "number": "4111 1111 1111 1111",
-            "security_code": "231",
-            "address": null
-        }
-TAG;
-        $state = json_decode($PAYMENT_CARD_PAYLOAD, true);
-        $this->assertEquals(json_last_error(), 0);
-        $state['identity'] = $identity->id;
-        $card = new PaymentInstrument($state);
-        return $card->save();
+        $this->markTestSkipped('must be revisited, see https://github.com/verygoodgroup/processing/issues/2330#issue-190787250');
+        $this->identityVerification = $this->identity->verifyOn(new Verification(["processor" => "DUMMY_V1"]));
+        $this->authorization = Fixtures::createAuthorization($this->card, 100);
+        $this->authorization = $this->authorization->void(true);
+        self::assertTrue($this->authorization->is_void, "Authorization not void");
     }
 
-    private function createBank($identity)
+    public function testSettlement()
     {
-        $BANK_ACCOUNT_PAYLOAD = <<<TAG
-        {
-            "name": {
-                "first_name": "dwayne",
-                "last_name": "Sunkhronos",
-                "full_name": "dwayne Sunkhronos"
-            },
-            "type": "BANK_ACCOUNT",
-            "tags": null,
-            "account_number": "84012312415",
-            "bank_code": "840123124",
-            "account_type": "SAVINGS",
-            "iban": null,
-            "bic": null,
-            "company_name": "company name",
-            "country": "USA",
-            "currency": "USD",
-            "available_account_type": null
-        }
-TAG;
-        $state = json_decode($BANK_ACCOUNT_PAYLOAD, true);
-        $this->assertEquals(json_last_error(), 0);
-        $state['identity'] = $identity->id;
-        $bank = new PaymentInstrument($state);
-        return $bank->save();
-    }
+        $this->markTestSkipped('must be revisited, ready_to_settle_at now too long to be completed');
+        $this->pushFundTransfer1 = Fixtures::createTransfer([
+            "identity" => $this->card->identity,
+            "amount" => 500,
+            "source" => $this->card->id
+        ]);
 
-    private function createAuthorization($identity, $card)
-    {
-        $state = [
-            "processor" => "DUMMY_V1",
-            "amount" => 100,
-            "merchant_identity" => $identity->id,
-            "source" => $card->id,
-            "tags" => [
-                "name" => "a random test name"
-            ]
-        ];
-        $auth = new Authorization($state);
-        return $auth->save();
-    }
+        $this->pushFundTransfer2 = Fixtures::createTransfer([
+            "identity" => $this->card->identity,
+            "amount" => 300,
+            "source" => $this->card->id
+        ]);
 
-    /**
-     * @param \Finix\Resources\Authorization $auth
-     * @return \Finix\Resources\Authorization
-     */
-    private function captureAuthorization($auth)
-    {
-        $auth->capture_amount = 50;
-        return $auth->save();
-    }
+        Fixtures::waitFor(function () {
+            $this->pushFundTransfer1 = $this->pushFundTransfer1->refresh();
+            $this->pushFundTransfer2 = $this->pushFundTransfer2->refresh();
 
-    private function createSourceTransfer($identity, $card)
-    {
-        $state = [
-            "processor" => "DUMMY_V1",
-            "amount" => 1000,
-            "currency" => "USD",
-            "merchant_identity" => $identity->id,
-            "source" => $card->id
-        ];
-        $srcTxfr = new Transfer($state);
-        return $srcTxfr->save();
-    }
+            return $this->pushFundTransfer1->state == "SUCCEEDED" and
+                $this->pushFundTransfer2->state == "SUCCEEDED" and
+                $this->pushFundTransfer1->ready_to_settle_at != null and
+                $this->pushFundTransfer2->ready_to_settle_at != null;
+        });
 
-    private function createDestinationTransfer($identity, $bank)
-    {
-        $state = [
-            "processor" => "DUMMY_V1",
-            "amount" => 1000,
-            "currency" => "USD",
-            "merchant_identity" => $identity->id,
-            "destination" => $bank->id
-        ];
-        $destTxfr = new Transfer($state);
-        return $destTxfr->save();
+        $this->settlement = Fixtures::createSettlement($this->identity);
+        var_dump($this->settlement);
     }
-
-    /**
-     * @param \Finix\Resources\Transfer $srcTxfr
-     * @return \Finix\Resources\Reversal
-     */
-    private function reverseTransfer($srcTxfr)
-    {
-        return $srcTxfr->reverse(100);
-    }
-
 }
