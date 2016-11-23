@@ -18,6 +18,7 @@ use Finix\Resources\Authorization;
 class Fixtures extends \PHPUnit_Framework_TestCase
 {
     public static $apiUrl = "https://api-staging.finix.io/";
+    public static $disputeAmount = 888888;
 
     public static function createAdminUser()
     {
@@ -64,7 +65,7 @@ class Fixtures extends \PHPUnit_Framework_TestCase
             "principal_percentage_ownership" => 10,
             "business_type" => "LIMITED_LIABILITY_COMPANY",
             "business_phone" => "+1 (408) 756-4497",
-            "first_name" => "dwayne",
+            "first_name" => "xdwayne",
             "last_name" => "Sunkhronos",
             "dob" => [
                 "month" => 5,
@@ -94,7 +95,6 @@ class Fixtures extends \PHPUnit_Framework_TestCase
             "email" => "xuser@example.org",
             "tax_id" => "x123456789"
         ];
-
     }
 
     public static function dummyProcessor($application)
@@ -140,7 +140,12 @@ class Fixtures extends \PHPUnit_Framework_TestCase
     public static function waitFor($condition)
     {
         $time = 5;
+        $timeout = 60 * 20;  // 20 mins
         while (!$condition()) {
+            $timeout -= $time;
+            if ($timeout <= 0) {
+                throw new \Exception("Execution timeout expired");
+            }
             print "waiting for " . $time . " seconds\n";
             sleep($time);
         }
@@ -152,7 +157,7 @@ class Fixtures extends \PHPUnit_Framework_TestCase
             "merchant_identity" => $args["identity"],
             "currency" => "USD",
             "amount" => $args["amount"],
-            "tags" => ["name" => "sample_tag"],
+            "tags" => ["_source" => "php_client"],
             "processor" => "DUMMY_V1"
         ]);
 
@@ -196,6 +201,7 @@ class Fixtures extends \PHPUnit_Framework_TestCase
     {
         $authorization = new Authorization([
             "amount" => $amount,
+            "currency" => "USD",
             "processor" => "DUMMY_V1",
             "source" => $paymentInstrument->id,
             "merchant_identity" => $paymentInstrument->identity

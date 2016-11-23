@@ -26,13 +26,10 @@ use Finix\Resource;
  */
 class Settings
 {
-    const VERSION = '1.0.0';
-
     public static $url_root = null,
                   $username = null,
                   $password = null,
                   $agent = 'finix-php',
-                  $version = Settings::VERSION,
                   $accept = 'application/vnd.json+api';
 
     public static function configure(array $args)
