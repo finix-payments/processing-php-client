@@ -58,24 +58,24 @@ abstract class Resource
 
     public function __construct(array $state = null, array $links = null)
     {
-        $this->client = self::createClient();
+        $this->client = Bootstrap::createClient();
         $this->setResource(new Hal\Resource($state, $links));
     }
 
-    private static function createClient()
-    {
-        if (Settings::$username == null || Settings::$password == null) {
-            $client = new Hal\Client(Settings::$url_root, '/');
-        }
-        else {
-            $client = new Hal\Client(
-                Settings::$url_root,
-                '/',
-                null,
-                new BasicAuthentication(Settings::$username, Settings::$password));
-        }
-        return $client;
-    }
+//    private static function createClient()
+//    {
+//        if (Settings::$username == null || Settings::$password == null) {
+//            $client = new Hal\Client(Settings::$url_root, '/');
+//        }
+//        else {
+//            $client = new Hal\Client(
+//                Settings::$url_root,
+//                '/',
+//                null,
+//                new BasicAuthentication(Settings::$username, Settings::$password));
+//        }
+//        return $client;
+//    }
 
     public function __get($name)
     {
@@ -123,12 +123,19 @@ abstract class Resource
     public static function retrieve($id)
     {
         $uri = self::getHrefSpec()->collection_uri . '/' . $id;
-        $resource = self::createClient()->sendRequest(new Request($uri));
+        $resource = Bootstrap::createClient()->sendRequest(new Request($uri));
         $class = get_called_class();
         return new $class($resource->getState(), $resource->getAllLinks());
     }
 
-    public function refresh() {
+    public static function getPagination($href)
+    {
+        $resource = Bootstrap::createClient()->sendRequest(new Request($href));
+        return new Pagination($resource, get_called_class());
+    }
+
+    public function refresh()
+    {
         $request = new Request(
             $this->resource->getLink("self")->getHref(),
             'GET'
@@ -204,11 +211,12 @@ abstract class Resource
 
 
     /**
+     * @param string $rel
      * @return string
      */
-    public function getHref()
+    public function getHref($rel = "self")
     {
-        return $this->resource->getLink("self")->getHref();
+        return $this->resource->getLink($rel)->getHref();
     }
 
     /**
