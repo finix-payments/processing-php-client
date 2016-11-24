@@ -2,6 +2,7 @@
 
 namespace Finix;
 use Finix\Resources;
+use Finix\Http\Auth\BasicAuthentication;
 
 /**
  * Bootstrapper for Finix does autoloading and resource initialization.
@@ -75,5 +76,20 @@ class Bootstrap
         Resources\Evidence::init();
 
         self::$initialized = true;
+    }
+
+    public static function createClient()
+    {
+        if (Settings::$username == null || Settings::$password == null) {
+            $client = new Hal\Client(Settings::$url_root, '/');
+        }
+        else {
+            $client = new Hal\Client(
+                Settings::$url_root,
+                '/',
+                null,
+                new BasicAuthentication(Settings::$username, Settings::$password));
+        }
+        return $client;
     }
 }
