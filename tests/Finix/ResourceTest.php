@@ -54,7 +54,7 @@ END;
      * - embedded resources
      * - links in embedded resources
      */
-    public function test_parseJsonRepresentation() {
+    public function testParseJsonRepresentation() {
 
         $resource = Resource::fromJson(self::JSON_REPRESENTATION);
 
@@ -94,7 +94,7 @@ END;
         $this->assertEquals(0, count($order1->getAllEmbeddedResources()));
     }
 
-    public function test_equalResources() {
+    public function testEqualResources() {
         $resource1 = Resource::fromJson(self::JSON_REPRESENTATION);
 
         $resource2 = Resource::fromJson(self::JSON_REPRESENTATION);
