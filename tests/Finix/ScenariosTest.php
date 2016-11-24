@@ -3,6 +3,7 @@ namespace Finix\Tests;
 
 
 use Finix\Resources\Dispute;
+use Finix\Resources\Transfer;
 use Finix\Resources\Verification;
 use Finix\Settings;
 
@@ -26,12 +27,14 @@ class ScenariosTest extends \PHPUnit_Framework_TestCase
     private $pushFundTransfer2;
     private $pushFundTransfer1;
     private $settlement;
+    private $receiptImage;
 
     protected function setUp()
     {
-        Settings::configure(["username" => null, "password" => null]);
+        $this->receiptImage = realpath("../../data/receipt.jpg");
 
         date_default_timezone_set("UTC");
+        Settings::configure(["username" => null, "password" => null]);
 
         $this->user = Fixtures::createAdminUser();
 
@@ -124,6 +127,12 @@ class ScenariosTest extends \PHPUnit_Framework_TestCase
         });
 
         $this->settlement = Fixtures::createSettlement($this->identity);
-        var_dump($this->settlement);
+    }
+
+    public function testDispute() {
+        $disputePage = Dispute::getPagination($this->pushFundTransfer->getHref("disputes"));
+        $dispute = $disputePage->items[0];
+        $file = $dispute->uploadEvidence($this->receiptImage);
+        $this->assertEquals($file->dispute, $dispute->id);
     }
 }
