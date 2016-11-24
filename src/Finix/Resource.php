@@ -62,21 +62,6 @@ abstract class Resource
         $this->setResource(new Hal\Resource($state, $links));
     }
 
-//    private static function createClient()
-//    {
-//        if (Settings::$username == null || Settings::$password == null) {
-//            $client = new Hal\Client(Settings::$url_root, '/');
-//        }
-//        else {
-//            $client = new Hal\Client(
-//                Settings::$url_root,
-//                '/',
-//                null,
-//                new BasicAuthentication(Settings::$username, Settings::$password));
-//        }
-//        return $client;
-//    }
-
     public function __get($name)
     {
         if ($this->state->has_key($name)) {
