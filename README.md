@@ -24,23 +24,25 @@ To use the bindings, use Composer's [autoload](https://getcomposer.org/doc/00-in
 require_once('vendor/autoload.php');
 ```
 
-## Source Installation
+## Getting Started
 
 If you do not wish to use Composer, you can download the [latest release](https://github.com/finix-payments/processing-php/releases). Then, `require` all bootstrap files:
 
 ```php
-require_once("/path/to/Finix/Bootstrap.php");
-\Finix\Bootstrap::init();
+require('/path/to/Finix/Settings.php');
+require('/path/to/Finix/Bootstrap.php');
+
+use \Finix\Settings;
+use \Finix\Bootstrap;
+
+Settings::configure([
+    "root_url" => "https://api-staging.finix.io",
+    "username" => 'US4CoseCAaB5RjTYrnwfDrZa',
+    "password" => '4ca5aef5-f077-4277-a785-00f2cab07c21'
+]);
+
+Bootstrap::init();
 ```
 
-## Getting Started
-
-```php
-require(__DIR__ . '/src/Finix/Settings.php');
-Finix\Settings::configure('http://b.papi.staging.finix.io', '$USERNAME', '$PASSWORD');
-require(__DIR__ . '/src/Finix/Bootstrap.php');
-\Finix\Bootstrap::init();
-```
-
-See the `tests/` for more details.
+See the [tests](https://github.com/finix-payments/processing-php-client/tree/master/tests) for more details.
 
