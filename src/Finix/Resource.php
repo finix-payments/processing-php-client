@@ -4,6 +4,7 @@ namespace Finix;
 use Finix\Http\Auth\BasicAuthentication;
 use Finix\Http\JsonBody;
 use Finix\Http\Request;
+use Finix\Resources\Verification;
 use Finix\Utils\ArrayProxy;
 use \stdClass;
 
@@ -15,7 +16,8 @@ abstract class Resource
     protected $state;
 
     protected static $href;
-    protected static $client;
+    protected $client;
+//    protected static $client;
     protected static $registry;
 
     /**
@@ -24,10 +26,10 @@ abstract class Resource
      */
     public static function getHrefSpec($resource = null)
     {
-        if(is_null($resource)){
+        if (is_null($resource)) {
             $resource = get_called_class();
         }
-        if(!is_string($resource)) {
+        if (!is_string($resource)) {
             $resource = get_class($resource);
         }
         return self::getRegistry()->getHrefSpecForResource($resource);
@@ -36,9 +38,9 @@ abstract class Resource
     /**
      * @return Hal\Client
      */
-    public static function getClient()
+    public function getClient()
     {
-        return self::$client;
+        return $this->client;
     }
 
     /**
@@ -51,23 +53,18 @@ abstract class Resource
 
     public static function init()
     {
-        self::$client = new Hal\Client(
-            Settings::$url_root,
-            '/',
-            null,
-            new BasicAuthentication(Settings::$username, Settings::$password));
         self::$registry = new Registry();
     }
 
     public function __construct(array $state = null, array $links = null)
     {
+        $this->client = Bootstrap::createClient();
         $this->setResource(new Hal\Resource($state, $links));
     }
 
     public function __get($name)
     {
-        if($this->state->has_key($name))
-        {
+        if ($this->state->has_key($name)) {
             return $this->state[$name];
         }
 
@@ -92,8 +89,8 @@ abstract class Resource
     public function __isset($name)
     {
         if (array_key_exists($name, $this->resource->getAllLinks()) ||
-            array_key_exists($name, $this->resource->getState()))
-        {
+            array_key_exists($name, $this->resource->getState())
+        ) {
             return true;
         }
 
@@ -111,9 +108,26 @@ abstract class Resource
     public static function retrieve($id)
     {
         $uri = self::getHrefSpec()->collection_uri . '/' . $id;
-        $resource = self::getClient()->sendRequest(new Request($uri));
+        $resource = Bootstrap::createClient()->sendRequest(new Request($uri));
         $class = get_called_class();
         return new $class($resource->getState(), $resource->getAllLinks());
+    }
+
+    public static function getPagination($href)
+    {
+        $resource = Bootstrap::createClient()->sendRequest(new Request($href));
+        return new Pagination($resource, get_called_class());
+    }
+
+    public function refresh()
+    {
+        $request = new Request(
+            $this->resource->getLink("self")->getHref(),
+            'GET'
+        );
+        $resource = $this->getClient()->sendRequest($request);
+        $this->setResource($resource);
+        return $this;
     }
 
     /**
@@ -128,12 +142,11 @@ abstract class Resource
     public function save()
     {
         if (empty($this->state["tags"])) {
-          $this->state["tags"] = new stdClass();
+            $this->state["tags"] = new stdClass();
         }
 
         $payload = new JsonBody(iterator_to_array($this->state));
-        if($this->isUpdate())
-        {
+        if ($this->isUpdate()) {
             $request = new Request(
                 $this->resource->getLink("self")->getHref(),
                 'PUT',
@@ -183,11 +196,12 @@ abstract class Resource
 
 
     /**
+     * @param string $rel
      * @return string
      */
-    public function getHref()
+    public function getHref($rel = "self")
     {
-        return $this->resource->getLink("self")->getHref();
+        return $this->resource->getLink($rel)->getHref();
     }
 
     /**
@@ -199,5 +213,9 @@ abstract class Resource
         $this->state = new ArrayProxy($resource->getState());
     }
 
-
+    public function verifyOn(Verification $verification)
+    {
+        $verifyLink = $this->resource->getLink("verifications")->getHref();
+        return $verification->create($verifyLink);
+    }
 }
