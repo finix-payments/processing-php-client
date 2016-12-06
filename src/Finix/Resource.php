@@ -179,7 +179,7 @@ abstract class Resource
      */
     protected function create($href)
     {
-        $payload = new JsonBody(iterator_to_array($this->state));
+        $payload = new JsonBody($this->state->count() == 0 ? "{}" : iterator_to_array($this->state));
         $request = new Request($href, 'POST', array(), $payload);
         $resource = $this->getClient()->sendRequest($request);
         $this->setResource($resource);

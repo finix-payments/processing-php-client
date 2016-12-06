@@ -119,7 +119,7 @@ class Fixtures extends \PHPUnit_Framework_TestCase
 
     public static function provisionMerchant($identity)
     {
-        $merchant = $identity->provisionMerchantOn(new Merchant(["processor" => "DUMMY_V1"]));
+        $merchant = $identity->provisionMerchantOn(new Merchant());
         self::assertEquals($merchant->identity, $identity->id, "Invalid merchant identity");
         return $merchant;
     }
