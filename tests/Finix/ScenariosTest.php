@@ -53,6 +53,11 @@ class ScenariosTest extends \PHPUnit_Framework_TestCase
 
         $this->identity = Fixtures::createIdentity();
 
+//        $entity = $this->identity->entity;
+//        $entity["last_name"] = "serna";
+//        $this->identity->entity = $entity;
+//        $this->identity->save();
+
         $this->merchant = Fixtures::provisionMerchant($this->identity);
 
         $this->card = Fixtures::createCard($this->identity);
