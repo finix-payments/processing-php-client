@@ -83,6 +83,11 @@ class ScenariosTest extends \PHPUnit_Framework_TestCase
         $this->webhook = Fixtures::createWebhook("https://tools.ietf.org/html/rfc2606");
     }
 
+    public function testCreateToken() {
+        $token = Fixtures::createPaymentToken($this->application, $this->identity->id);
+        self::assertNotNull($token->id, "Payment token not created");
+    }
+
     public function testCaptureAuthorization()
     {
         $this->markTestSkipped('must be revisited, see https://github.com/verygoodgroup/processing/issues/2330#issue-190787250');
