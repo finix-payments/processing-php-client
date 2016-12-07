@@ -11,6 +11,11 @@ class Identity extends Resource
         self::getRegistry()->add(get_called_class(), new HrefSpec('identities', 'id', '/'));
     }
 
+    public function createMerchantUser(User $user)
+    {
+        return $user->create($this->resource->getLink("users")->getHref());
+    }
+
     public function provisionMerchantOn(Merchant $merchant)
     {
         return $merchant->create($this->resource->getLink("merchants")->getHref());
