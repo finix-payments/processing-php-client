@@ -109,7 +109,6 @@ class ScenariosTest extends \PHPUnit_Framework_TestCase
 
     public function testSettlement()
     {
-        $this->markTestSkipped('must be revisited, reconciliation period too long');
         $transfer1 = Fixtures::createTransfer([
             "identity" => $this->card->identity,
             "amount" => 500,
