@@ -132,7 +132,7 @@ class ScenariosTest extends \PHPUnit_Framework_TestCase
         });
 
         $settlement = Fixtures::createSettlement($this->identity);
-        assertEquals($settlement.state, "SUCCEEDED");
+        $this->assertEquals($settlement.state, "SUCCEEDED");
     }
 
     public function testDispute() {
