@@ -20,4 +20,9 @@ class Application extends Resource
     {
         return $processor->create($this->resource->getLink("processors")->getHref());
     }
+
+    public function createToken(Token $token)
+    {
+        return $token->create($this->resource->getLink("tokens")->getHref());
+    }
 }
