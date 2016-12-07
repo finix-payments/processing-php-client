@@ -54,7 +54,7 @@ class Fixtures extends \PHPUnit_Framework_TestCase
     public static function sampleEntity()
     {
         return [
-            "max_transaction_amount" => 1,
+            "max_transaction_amount" => Fixtures::$disputeAmount,
             "settlement_currency" => "USD",
             "settlement_bank_account" => "CORPORATE",
             "url" => "http://sample.company.com",
@@ -140,7 +140,7 @@ class Fixtures extends \PHPUnit_Framework_TestCase
     public static function waitFor($condition)
     {
         $time = 5;
-        $timeout = 60 * 20;  // 20 mins
+        $timeout = 60 * 60;  // 20 mins
         while (!$condition()) {
             $timeout -= $time;
             if ($timeout <= 0) {

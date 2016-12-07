@@ -108,7 +108,6 @@ class ScenariosTest extends \PHPUnit_Framework_TestCase
 
     public function testSettlement()
     {
-        $this->markTestSkipped('must be revisited, ready_to_settle_at now too long to be completed');
         $this->pushFundTransfer1 = Fixtures::createTransfer([
             "identity" => $this->card->identity,
             "amount" => 500,
