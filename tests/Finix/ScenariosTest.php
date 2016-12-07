@@ -3,7 +3,6 @@ namespace Finix\Tests;
 
 
 use Finix\Resources\Dispute;
-use Finix\Resources\Transfer;
 use Finix\Resources\Verification;
 use Finix\Settings;
 
@@ -17,16 +16,6 @@ class ScenariosTest extends \PHPUnit_Framework_TestCase
     private $identity;
     private $merchant;
     private $card;
-    private $cardVerification;
-    private $pushFundTransfer;
-    private $bankAccount;
-    private $pushFundTransferReversal;
-    private $webhook;
-    private $authorization;
-    private $identityVerification;
-    private $pushFundTransfer2;
-    private $pushFundTransfer1;
-    private $settlement;
     private $receiptImage;
 
     protected function setUp()
@@ -61,26 +50,10 @@ class ScenariosTest extends \PHPUnit_Framework_TestCase
         $this->merchant = Fixtures::provisionMerchant($this->identity);
 
         $this->card = Fixtures::createCard($this->identity);
-
-        $this->cardVerification = $this->card->verifyOn(new Verification(["processor" => "DUMMY_V1"]));
-
-        $this->pushFundTransfer = Fixtures::createTransfer([
-            "identity" => $this->card->identity,
-            "amount" => Fixtures::$disputeAmount,
-            "source" => $this->card->id,
-            "tags" => ["_source" => "php_client"]
-        ]);
-
-        self::assertEquals($this->pushFundTransfer->state, "PENDING", "Transfer not in pending state");
-
-        Fixtures::waitFor(function () {
-            $this->pushFundTransfer = $this->pushFundTransfer->refresh();
-            return $this->pushFundTransfer->state == "SUCCEEDED";
-        });
-
-        $this->bankAccount = Fixtures::createBankAccount($this->identity);
-
-        $this->webhook = Fixtures::createWebhook("https://tools.ietf.org/html/rfc2606");
+    }
+    public function testCreateWebhook() {
+        $webhook = Fixtures::createWebhook("https://tools.ietf.org/html/rfc2606");
+        self::assertNotNull($webhook->id);
     }
 
     public function testCreateToken() {
@@ -88,58 +61,84 @@ class ScenariosTest extends \PHPUnit_Framework_TestCase
         self::assertNotNull($token->id, "Payment token not created");
     }
 
+    public function testCreateBankAccount() {
+        $bankAccount = Fixtures::createBankAccount($this->identity);
+        self::assertNotNull($bankAccount->id);
+    }
+
+    public function testVerifyIdentity() {
+        $verification = $this->identity->verifyOn(new Verification(["processor" => "DUMMY_V1"]));
+        self::assertEquals($verification->state, "PENDING");
+    }
+
+    public function testDebitTransfer() {
+        $transfer = Fixtures::createTransfer([
+            "identity" => $this->card->identity,
+            "amount" => Fixtures::$disputeAmount,
+            "source" => $this->card->id,
+            "tags" => ["_source" => "php_client"]
+        ]);
+        self::assertEquals($transfer->state, "PENDING", "Transfer not in pending state");
+        Fixtures::waitFor(function () use ($transfer) {
+            $transfer->refresh();
+            return $transfer->state == "SUCCEEDED";
+        });
+        return $transfer;
+    }
+
     public function testCaptureAuthorization()
     {
-        $this->markTestSkipped('must be revisited, see https://github.com/verygoodgroup/processing/issues/2330#issue-190787250');
-        $this->authorization = Fixtures::createAuthorization($this->card, 100);
-        $this->authorization = $this->authorization->capture(10);
-        self::assertEquals($this->authorization->state, "SUCCEEDED", "Capture amount $10 of '" . $this->card->id . "' not succeeded");
+        $authorization = Fixtures::createAuthorization($this->card, 100);
+        $authorization = $authorization->capture(50, 10);
+        self::assertEquals($authorization->state, "SUCCEEDED", "Capture amount $10 of '" . $this->card->id . "' not succeeded");
     }
 
     public function testReverseFunds()
     {
-        $this->pushFundTransferReversal = $this->pushFundTransfer->reverse(50);
-        self::assertEquals($this->pushFundTransferReversal->state, "PENDING", "Reverse not in pending state");
+        $transfer = $this->testDebitTransfer();
+        $transfer = $transfer->reverse(50);
+        self::assertEquals($transfer->state, "PENDING", "Reverse not in pending state");
     }
 
     public function testVoidAuthorization()
     {
-        $this->markTestSkipped('must be revisited, see https://github.com/verygoodgroup/processing/issues/2330#issue-190787250');
-        $this->identityVerification = $this->identity->verifyOn(new Verification(["processor" => "DUMMY_V1"]));
-        $this->authorization = Fixtures::createAuthorization($this->card, 100);
-        $this->authorization = $this->authorization->void(true);
-        self::assertTrue($this->authorization->is_void, "Authorization not void");
+        $authorization = Fixtures::createAuthorization($this->card, 100);
+        $authorization = $authorization->void(true);
+        self::assertTrue($authorization->is_void, "Authorization not void");
     }
 
     public function testSettlement()
     {
-        $this->pushFundTransfer1 = Fixtures::createTransfer([
+        $this->markTestSkipped('must be revisited, reconciliation period too long');
+        $transfer1 = Fixtures::createTransfer([
             "identity" => $this->card->identity,
             "amount" => 500,
             "source" => $this->card->id
         ]);
 
-        $this->pushFundTransfer2 = Fixtures::createTransfer([
+        $transfer2 = Fixtures::createTransfer([
             "identity" => $this->card->identity,
             "amount" => 300,
             "source" => $this->card->id
         ]);
 
-        Fixtures::waitFor(function () {
-            $this->pushFundTransfer1 = $this->pushFundTransfer1->refresh();
-            $this->pushFundTransfer2 = $this->pushFundTransfer2->refresh();
+        Fixtures::waitFor(function () use ($transfer1, $transfer2) {
+            $transfer1 = $transfer1->refresh();
+            $transfer2 = $transfer2->refresh();
 
-            return $this->pushFundTransfer1->state == "SUCCEEDED" and
-                $this->pushFundTransfer2->state == "SUCCEEDED" and
-                $this->pushFundTransfer1->ready_to_settle_at != null and
-                $this->pushFundTransfer2->ready_to_settle_at != null;
+            return $transfer1->state == "SUCCEEDED" and
+                $transfer2->state == "SUCCEEDED" and
+                $transfer1->ready_to_settle_at != null and
+                $transfer2->ready_to_settle_at != null;
         });
 
-        $this->settlement = Fixtures::createSettlement($this->identity);
+        $settlement = Fixtures::createSettlement($this->identity);
+        assertEquals($settlement.state, "SUCCEEDED");
     }
 
     public function testDispute() {
-        $disputePage = Dispute::getPagination($this->pushFundTransfer->getHref("disputes"));
+        $transfer = $this->testDebitTransfer();
+        $disputePage = Dispute::getPagination($transfer->getHref("disputes"));
         $dispute = $disputePage->items[0];
         $file = $dispute->uploadEvidence($this->receiptImage);
         $this->assertEquals($file->dispute, $dispute->id);
