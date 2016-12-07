@@ -89,7 +89,10 @@ class ScenariosTest extends \PHPUnit_Framework_TestCase
     public function testCaptureAuthorization()
     {
         $authorization = Fixtures::createAuthorization($this->card, 100);
-        $authorization = $authorization->capture(50, 10);
+        $authorization = $authorization->capture([
+            "capture_amount"=> 100,
+            "fee"=> 10
+        ]);
         self::assertEquals($authorization->state, "SUCCEEDED", "Capture amount $10 of '" . $this->card->id . "' not succeeded");
     }
 
