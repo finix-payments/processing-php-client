@@ -10,6 +10,7 @@ use Finix\Resources\Merchant;
 use Finix\Resources\PaymentCard;
 use Finix\Resources\Processor;
 use Finix\Resources\Settlement;
+use Finix\Resources\Token;
 use Finix\Resources\Transfer;
 use Finix\Resources\User;
 use Finix\Resources\Webhook;
@@ -54,7 +55,7 @@ class Fixtures extends \PHPUnit_Framework_TestCase
     public static function sampleEntity()
     {
         return [
-            "max_transaction_amount" => 1,
+            "max_transaction_amount" => Fixtures::$disputeAmount,
             "settlement_currency" => "USD",
             "settlement_bank_account" => "CORPORATE",
             "url" => "http://sample.company.com",
@@ -119,7 +120,7 @@ class Fixtures extends \PHPUnit_Framework_TestCase
 
     public static function provisionMerchant($identity)
     {
-        $merchant = $identity->provisionMerchantOn(new Merchant(["processor" => "DUMMY_V1"]));
+        $merchant = $identity->provisionMerchantOn(new Merchant());
         self::assertEquals($merchant->identity, $identity->id, "Invalid merchant identity");
         return $merchant;
     }
@@ -140,7 +141,7 @@ class Fixtures extends \PHPUnit_Framework_TestCase
     public static function waitFor($condition)
     {
         $time = 5;
-        $timeout = 60 * 20;  // 20 mins
+        $timeout = 60 * 60;  // 20 mins
         while (!$condition()) {
             $timeout -= $time;
             if ($timeout <= 0) {
@@ -220,5 +221,35 @@ class Fixtures extends \PHPUnit_Framework_TestCase
         $settlement = $identity->createSettlement($settlement);
         self::assertNotNull($settlement->id, "Settlement not created");
         return $settlement;
+    }
+
+    public static function createPaymentToken($application, $identityId)
+    {
+        $token = new Token([
+            "address" => [
+                "city" => "San Mateo",
+                "country" => "USA",
+                "line1" => "741 Douglass St",
+                "line2" => "Apartment 7",
+                "postal_code" => "94114",
+                "region" => "CA"
+            ],
+            "brand" => "VISA",
+            "card_type" => "CREDIT",
+            "expiration_month" => 12,
+            "expiration_year" => 2020,
+            "name" => [
+                "first_name" => "Joe",
+                "full_name" => "Joe Doe",
+                "last_name" => "Doe"
+            ],
+            "identity" => $identityId,
+            "number" => "4111111111111111",
+            "security_code" => "231",
+            "type" => "PAYMENT_CARD"
+        ]);
+        $token = $application->createToken($token);
+        self::assertNotNull($token->id, "Payment token not created");
+        return $token;
     }
 }
