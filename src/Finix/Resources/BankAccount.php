@@ -2,6 +2,7 @@
 
 namespace Finix\Resources;
 
+use Finix\Hal\HrefSpec;
 
 class BankAccount extends PaymentInstrument
 {
@@ -9,5 +10,10 @@ class BankAccount extends PaymentInstrument
     {
         $state["type"] = "BANK_ACCOUNT";
         parent::__construct($state, $links);
+    }
+
+    public static function init()
+    {
+        self::getRegistry()->add(get_called_class(), new HrefSpec('payment_instruments', 'id', '/'));
     }
 }

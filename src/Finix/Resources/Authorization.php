@@ -11,14 +11,15 @@ class Authorization extends Resource
         self::getRegistry()->add(get_called_class(), new HrefSpec('authorizations', 'id', '/'));
     }
 
-    public function capture($amount, $fee = 0)
+    public function capture(array $cap = [])
     {
-        $this->state["capture_amount"] = $amount;
-        $this->state["fee"] = $fee;
+        foreach ($cap as $key => $value) {
+            $this->state[$key] = $value;
+        }
         return $this->save();
     }
 
-    public function void($voidMe)
+    public function void($voidMe = true)
     {
         $this->state["void_me"] = $voidMe;
         return $this->save();

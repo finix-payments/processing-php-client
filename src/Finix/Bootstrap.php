@@ -66,6 +66,8 @@ class Bootstrap
         Resources\Processor::init();
         Resources\Merchant::init();
         Resources\PaymentInstrument::init();
+        Resources\PaymentCard::init();
+        Resources\BankAccount::init();
         Resources\Authorization::init();
         Resources\Transfer::init();
         Resources\Reversal::init();
