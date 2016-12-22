@@ -23,7 +23,7 @@ class Fixtures extends \PHPUnit_Framework_TestCase
 
     public static function createAdminUser()
     {
-        $user = new User(["enabled" => true]);
+        $user = new User(["enabled" => true, "role" => "ROLE_ADMIN"]);
         $user = $user->save();
         self::assertNotEmpty($user->id);
         self::assertNotEmpty($user->password);
