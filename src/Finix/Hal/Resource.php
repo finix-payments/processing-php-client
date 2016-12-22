@@ -92,6 +92,11 @@ class Resource
         return $link;
     }
 
+    public function hasRel($rel)
+    {
+        return self::findByRel($this->links, $rel) != null;
+    }
+
     /**
      * Finds an array of links by their relation type.
      * Note that there is no guarantees as to the order of the links.
