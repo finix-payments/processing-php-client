@@ -3,10 +3,13 @@ namespace Finix\Tests;
 
 
 use Finix\Resources\Dispute;
+use Finix\Resources\Identity;
+use Finix\Resources\Transfer;
 use Finix\Resources\Verification;
 use Finix\Resources\PaymentCard;
 use Finix\Resources\BankAccount;
 use Finix\Resources\User;
+use Finix\Resources\InstrumentUpdate;
 use Finix\Settings;
 
 class ScenariosTest extends \PHPUnit_Framework_TestCase
@@ -44,15 +47,16 @@ class ScenariosTest extends \PHPUnit_Framework_TestCase
         Settings::configure(["username" => $this->partnerUser->id, "password" => $this->partnerUser->password]);
 
         $this->identity = Fixtures::createIdentity();
-
-//        $entity = $this->identity->entity;
-//        $entity["last_name"] = "serna";
-//        $this->identity->entity = $entity;
-//        $this->identity->save();
-
+        $this->bankAccount = Fixtures::createBankAccount($this->identity);
         $this->merchant = Fixtures::provisionMerchant($this->identity);
 
         $this->card = Fixtures::createCard($this->identity);
+    }
+
+    public function testRetrieveIdentity()
+    {
+        $identity = Identity::retrieve($this->identity->id);
+        $this->assertEquals($this->identity->id, $identity->id);
     }
 
     public function testCreateMerchantUser() {
@@ -181,9 +185,51 @@ class ScenariosTest extends \PHPUnit_Framework_TestCase
 
     public function testDispute() {
         $transfer = $this->testDebitTransfer();
-        $disputePage = Dispute::getPagination($transfer->getHref("disputes"));
+        $disputePage = Dispute::getPagination($transfer);
         $dispute = $disputePage->items[0];
         $file = $dispute->uploadEvidence($this->receiptImage);
         $this->assertEquals($file->dispute, $dispute->id);
+    }
+
+    public function testCreateAndFetchInstrumentUpdate()
+    {
+        $identity = Fixtures::createIdentity();
+        Fixtures::createBankAccount($identity);
+        $merchant = Fixtures::provisionMerchant($identity);
+        $update = $this->card->createUpdate(new InstrumentUpdate(["merchant" => $merchant->id]));
+        $this->assertEquals($this->application->id, $update->application);
+
+        $fetchUpdate = InstrumentUpdate::retrieve(PaymentCard::getUpdateUri($this->card->id, $update->id));
+        $this->assertEquals($update->id, $fetchUpdate->id);
+    }
+
+    public function testGetAllInstrumentUpdates()
+    {
+        $this->testCreateAndFetchInstrumentUpdate();
+        $instrumentUpdatePage = InstrumentUpdate::getPagination($this->card);
+        foreach ($instrumentUpdatePage as $indexPage => $instrumentUpdates) {
+            foreach ($instrumentUpdates as $index => $instrumentUpdate) { // read the first page
+                $this->assertEquals($this->application->id, $instrumentUpdate->application);
+            }
+        }
+    }
+
+    public function testIterateAllTransfers()
+    {
+        for ($i = 0; $i <= 41; $i++) {
+            Fixtures::createTransfer([
+                "identity" => $this->card->identity,
+                "amount" => Fixtures::$disputeAmount,
+                "source" => $this->card->id,
+                "tags" => ["_source" => "php_client"]
+            ]);
+        }
+
+        $transferPage = Transfer::getPagination($this->card);
+        foreach ($transferPage as $indexPage => $items) {
+            foreach ($items as $index => $transfer) { // read the first page
+                $this->assertTrue($transfer->amount > 0);
+            }
+        }
     }
 }

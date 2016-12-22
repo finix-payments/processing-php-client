@@ -2,9 +2,12 @@
 
 namespace Finix;
 
+use Finix\Http\Request;
+use Iterator;
 
-class Pagination extends Resource
+class Pagination extends Resource implements Iterator
 {
+    private $resourceClass;
 
     public function __construct(Hal\Resource $halResource, $class)
     {
@@ -16,5 +19,40 @@ class Pagination extends Resource
             array_push($items, new $class($resource->getState(), $resource->getAllLinks()));
         }
         $this->state->items = $items;
+        $this->resourceClass = $class;
+    }
+
+    public function current()
+    {
+        return $this->state->items;
+    }
+
+    public function next()
+    {
+        if (!$this->resource->hasRel("next")) {
+            $this->state->items = array();
+            $page = $this->state->page;
+            $page["offset"] = $page["count"];
+            $this->page = $page;
+            return;
+        }
+        $link = $this->resource->getLink('next')->getHref();
+        $halResource = $this->client->sendRequest(new Request($link));
+        $this->__construct($halResource, $this->resourceClass);
+    }
+
+    public function key()
+    {
+        return $this->page["offset"];
+    }
+
+    public function valid()
+    {
+        return $this->page["offset"] < $this->page["count"];
+    }
+
+    public function rewind()
+    {
+        // TODO: Implement rewind() method.
     }
 }
