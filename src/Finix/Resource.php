@@ -225,16 +225,4 @@ abstract class Resource
         $verifyLink = $this->resource->getLink("verifications")->getHref();
         return $verification->create($verifyLink);
     }
-
-//    public function update(array $array=[])
-//    {
-//        $updateLink = $this->resource->getLink("updates")->getHref();
-//        $payload = new JsonBody($this->state->count() == 0 ? "{}" : iterator_to_array($this->state));
-//        $request = new Request($href, 'POST', array(), $payload);
-//        $resource = $this->getClient()->sendRequest($request);
-//        $this->setResource($resource);
-//        return $this;
-////        return $application->create($this->resource->getLink("applications")->getHref());
-////        return $verification->create($updateLink);
-//    }
 }
