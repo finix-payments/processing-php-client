@@ -29,6 +29,13 @@ class Pagination extends Resource implements Iterator
 
     public function next()
     {
+        if (!$this->resource->hasRel("next")) {
+            $this->state->items = array();
+            $page = $this->state->page;
+            $page["offset"] = $page["count"];
+            $this->page = $page;
+            return;
+        }
         $link = $this->resource->getLink('next')->getHref();
         $halResource = $this->client->sendRequest(new Request($link));
         $this->__construct($halResource, $this->resourceClass);
