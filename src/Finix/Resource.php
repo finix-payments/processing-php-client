@@ -103,7 +103,8 @@ abstract class Resource
      */
     public static function retrieve($id_or_url)
     {
-        $uri = filter_var($id_or_url, FILTER_VALIDATE_URL) ?
+
+        $uri = filter_var($id_or_url, FILTER_VALIDATE_URL) || (strpos($id_or_url, '/') !== false) ?
             $id_or_url : self::getHrefSpec()->collection_uri . '/' . $id_or_url;
         $resource = Bootstrap::createClient()->sendRequest(new Request($uri));
         $class = get_called_class();
