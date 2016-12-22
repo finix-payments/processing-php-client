@@ -26,6 +26,7 @@ class PaymentCard extends PaymentInstrument
 
     public static function getUpdateUri($card_id, $update_id)
     {
-        return self::getHrefSpec()->name . "/" . $card_id . InstrumentUpdate::getHrefSpec()->name . "?id=" .  $update_id;
+        // TODO move this to Registry
+        return "/" . self::getHrefSpec()->name . "/" . $card_id . "/" . InstrumentUpdate::getHrefSpec()->name . "?id=" . $update_id;
     }
 }
