@@ -10,14 +10,10 @@ use \stdClass;
 
 abstract class Resource
 {
-    /** @var Hal\Resource $resource */
     protected $resource;
-    /** @var  ArrayProxy $state */
     protected $state;
-
-    protected static $href;
     protected $client;
-//    protected static $client;
+    protected static $href;
     protected static $registry;
 
     /**
@@ -105,18 +101,28 @@ abstract class Resource
      * @throws Hal\Exception\HalRedirectionException
      * @throws Hal\Exception\HalServerErrorException
      */
-    public static function retrieve($id)
+    public static function retrieve($id_or_url)
     {
-        $uri = self::getHrefSpec()->collection_uri . '/' . $id;
+        $uri = filter_var($id_or_url, FILTER_VALIDATE_URL) ?
+            $id_or_url : self::getHrefSpec()->collection_uri . '/' . $id_or_url;
         $resource = Bootstrap::createClient()->sendRequest(new Request($uri));
         $class = get_called_class();
-        return new $class($resource->getState(), $resource->getAllLinks());
+        $state = $resource->getState();
+        if (sizeof($resource->getAllEmbeddedResources()) > 0) {
+            $items = $resource->getAllEmbeddedResources();
+            $items = reset($items);
+            if (sizeof($items) == 1) {
+                $state = $items[0]->getState();
+            }
+        }
+        return new $class($state, $resource->getAllLinks());
     }
 
-    public static function getPagination($href)
+    public static function getPagination($resource)
     {
-        $resource = Bootstrap::createClient()->sendRequest(new Request($href));
-        return new Pagination($resource, get_called_class());
+        $cls =  get_called_class();
+        $halResource = Bootstrap::createClient()->sendRequest(new Request($resource->getHref($cls::getHrefSpec()->name)));
+        return new Pagination($halResource, $cls);
     }
 
     public function refresh()
@@ -218,4 +224,16 @@ abstract class Resource
         $verifyLink = $this->resource->getLink("verifications")->getHref();
         return $verification->create($verifyLink);
     }
+
+//    public function update(array $array=[])
+//    {
+//        $updateLink = $this->resource->getLink("updates")->getHref();
+//        $payload = new JsonBody($this->state->count() == 0 ? "{}" : iterator_to_array($this->state));
+//        $request = new Request($href, 'POST', array(), $payload);
+//        $resource = $this->getClient()->sendRequest($request);
+//        $this->setResource($resource);
+//        return $this;
+////        return $application->create($this->resource->getLink("applications")->getHref());
+////        return $verification->create($updateLink);
+//    }
 }
