@@ -77,6 +77,7 @@ class Bootstrap
         Resources\Verification::init();
         Resources\Evidence::init();
         Resources\Token::init();
+        Resources\InstrumentUpdate::init();
 
         self::$initialized = true;
     }
