@@ -199,9 +199,7 @@ class ScenariosTest extends \PHPUnit_Framework_TestCase
         $update = $this->card->createUpdate(new InstrumentUpdate(["merchant" => $merchant->id]));
         $this->assertEquals($this->application->id, $update->application);
 
-//        $href = $this->card->getHref("updates") . "?id=" .  $update->id;
         $fetchUpdate = InstrumentUpdate::retrieve(PaymentCard::getUpdateUri($this->card->id, $update->id));
-//        $fetchUpdate = InstrumentUpdate::retrieve($href);
         $this->assertEquals($update->id, $fetchUpdate->id);
     }
 
