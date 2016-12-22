@@ -10,7 +10,7 @@ use \Finix\Bootstrap;
 
 $processing_url = getenv("PROCESSING_URL");
 if ($processing_url == null) {
-    $processing_url =  "https://api-test.payline.io";
+    $processing_url =  "https://api-staging.finix.io/";
 }
 
 Fixtures::$apiUrl = $processing_url;
