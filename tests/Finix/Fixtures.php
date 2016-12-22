@@ -18,7 +18,7 @@ use Finix\Resources\Authorization;
 
 class Fixtures extends \PHPUnit_Framework_TestCase
 {
-    public static $apiUrl = "https://api-staging.finix.io/";
+    public static $apiUrl = "https://api-test.payline.io";
     public static $disputeAmount = 888888;
 
     public static function createAdminUser()
