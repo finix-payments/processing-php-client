@@ -30,36 +30,4 @@ class HrefSpec
             }
         }
     }
-
-//    public function match($uri)
-//    {
-//        $parts = explode('/', rtrim($uri, "/"));
-//
-//        // collection
-//        if ($parts[count($parts) - 1] == $this->name) {
-//
-//            return array(
-//                'collection' => true,
-//            );
-//        }
-//
-//        // non-member
-//        if (count($parts) < count($this->idNames) + 1 ||
-//            $parts[count($parts) - 1 - count($this->idNames)] != $this->name
-//        ) {
-//            return null;
-//        }
-//
-//        // member
-//        $ids = array_combine(
-//            $this->idNames,
-//            array_slice($parts, -count($this->idNames))
-//        );
-//        $result = array(
-//            'collection' => false,
-//            'ids'        => $ids,
-//        );
-//
-//        return $result;
-//    }
 }
