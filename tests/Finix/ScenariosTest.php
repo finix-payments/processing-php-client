@@ -205,7 +205,7 @@ class ScenariosTest extends \PHPUnit_Framework_TestCase
 
     public function testGetAllInstrumentUpdates()
     {
-        $this->testCreateInstrumentUpdate();
+        $this->testCreateAndFetchInstrumentUpdate();
         $instrumentUpdatePage = InstrumentUpdate::getPagination($this->card);
         foreach ($instrumentUpdatePage as $indexPage => $instrumentUpdates) {
             foreach ($instrumentUpdates as $index => $instrumentUpdate) { // read the first page
