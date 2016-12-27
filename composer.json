@@ -1,6 +1,6 @@
 {
   "name": "finix/processing-php",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "A PHP HTTP Client conforming to the HAL hypermedia type for the Finix processing API",
   "license": "Apache2",
   "authors": [
