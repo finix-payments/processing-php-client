@@ -17,6 +17,9 @@
     "phpunit/phpunit": "3.7.*"
   },
   "autoload": {
+    "psr-0": {
+      "Finix\\": "./src"
+    },
     "psr-4": {
       "Finix\\": "src/"
     }
