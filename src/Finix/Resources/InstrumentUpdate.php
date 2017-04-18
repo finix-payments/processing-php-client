@@ -1,5 +1,4 @@
 <?php
-
 namespace Finix\Resources;
 
 use Finix\Hal\HrefSpec;
