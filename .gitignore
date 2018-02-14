@@ -1,7 +1,6 @@
 # composer
 .buildpath
 composer.phar
-vendor/
 *~
 *#
 # phar
